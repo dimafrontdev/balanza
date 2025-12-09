@@ -1,4 +1,229 @@
 {
   "welcome": "Welcome",
-  "hello_world": "Hello World!"
+  "hello_world": "Hello World!",
+  "auth": {
+    "login": {
+      "title": "Welcome back,\nyou've been missed!",
+      "trackExpenses": "Track expenses",
+      "smartInsights": "Smart insights",
+      "emailPlaceholder": "Email",
+      "passwordPlaceholder": "Password",
+      "loginButton": "Login",
+      "noAccount": "Don't have an account? ",
+      "registerLink": "Register"
+    },
+    "register": {
+      "title": "Create account,\nto start your journey",
+      "secure": "Secure",
+      "aiPowered": "AI-Powered",
+      "namePlaceholder": "Name",
+      "emailPlaceholder": "Email",
+      "passwordPlaceholder": "Password",
+      "terms": "By creating an account, you agree to our Terms of Service and Privacy Policy.",
+      "createButton": "Create account",
+      "hasAccount": "Already have an account? ",
+      "loginLink": "Login"
+    },
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 8 characters long",
+      "passwordStrength": "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character",
+      "nameRequired": "Name is required",
+      "nameMinLength": "Name must be at least 2 characters long"
+    },
+    "errors": {
+      "loginFailed": "Login failed",
+      "registrationFailed": "Registration failed",
+      "loginError": "Login Error",
+      "registrationError": "Registration Error"
+    }
+  },
+  "tabs": {
+    "balance": "Balance",
+    "accounts": "Accounts",
+    "groups": "Groups",
+    "analytics": "Analytics",
+    "settings": "Settings"
+  },
+  "balance": {
+    "monthlyBudget": "Monthly Budget",
+    "left": " left",
+    "over": " over",
+    "goals": "goals",
+    "sharedExpenses": "Shared Expenses",
+    "recentGroups": "Recent Groups & Friends",
+    "seeAllGroups": "See All Groups",
+    "recentTransactions": "RECENT TRANSACTIONS",
+    "seeAllTransactions": "See All Transactions",
+    "customizeHome": "Customize Home",
+    "customizeHomeSubtitle": "Select widgets to display and arrange their order.",
+    "widgets": {
+      "totalBalance": "Total Balance",
+      "monthlyBudget": "Monthly Budget",
+      "financialGoals": "Financial Goals",
+      "sharedExpenses": "Shared",
+      "recentTransactions": "Recent Transactions"
+    }
+  },
+  "groups": {
+    "title": "Groups",
+    "addFriendOrGroup": "Add Friend or Group",
+    "chooseOption": "Choose an option below",
+    "inviteFriend": "Invite Friend",
+    "inviteFriendDescription": "Add someone by name and contact",
+    "createGroup": "Create Group",
+    "createGroupDescription": "Group your friends for trips or events",
+    "inviteFriendTitle": "Invite Friend",
+    "inviteFriendSubtitle": "Invite someone to split expenses",
+    "createGroupTitle": "Create Group",
+    "createGroupSubtitle": "Create a group for shared expenses",
+    "friendName": "Friend's Name",
+    "friendNamePlaceholder": "Enter name...",
+    "contactInformation": "Contact Information",
+    "contactPlaceholder": "Email or phone number...",
+    "groupName": "Group Name",
+    "groupNamePlaceholder": "e.g., Barcelona Trip, Office Lunch...",
+    "groupIcon": "Group Icon",
+    "tapToChangeIcon": "Tap to change icon",
+    "inviteFriendButton": "Invite Friend",
+    "createGroupButton": "Create Group",
+    "pendingNote": "💡 Your friend will be added as \"Pending\" until they register and join the app. You can still add expenses with them.",
+    "addFriendsNote": "After creating the group, you'll be able to add friends from your friends list.",
+    "sections": {
+      "groups": "GROUPS",
+      "friends": "FRIENDS"
+    },
+    "settledUp": {
+      "title": "settled up"
+    },
+    "balance": {
+      "youOwe": "you owe",
+      "youreOwed": "you're owed",
+      "noExpenses": "no shared expenses yet",
+      "pending": "pending",
+      "settledUp": "settled up",
+      "members_one": "{{count}} member",
+      "members_other": "{{count}} members"
+    },
+    "validation": {
+      "nameRequired": "Name is required",
+      "nameMinLength": "Name must be at least 2 characters",
+      "contactRequired": "Contact information is required",
+      "contactInvalid": "Please enter a valid email or phone number",
+      "groupNameRequired": "Group name is required",
+      "groupNameMinLength": "Group name must be at least 2 characters"
+    }
+  },
+  "accounts": {
+    "addAccount": "Add Account",
+    "allAccounts": "ALL ACCOUNTS",
+    "totalBalance": "Total Balance",
+    "selectType": "Select Account Type",
+    "selectAccountType": "Select account type",
+    "accountDetails": "Account Details",
+    "accountsCount_one": "{{ count }} account",
+    "accountsCount_other": "{{ count }} accounts",
+    "groups": {
+      "cash": "Cash",
+      "bank": "Bank Accounts",
+      "credit_card": "Credit Cards",
+      "investment": "Investments"
+    },
+    "types": {
+      "cash": "Cash",
+      "card": "Card",
+      "crypto": "Crypto",
+      "realEstate": "Real Estate",
+      "cars": "Cars",
+      "credit": "Credit",
+      "goal": "Goal",
+      "other": "Other"
+    },
+    "fields": {
+      "icon": "Icon",
+      "accountName": "Account Name",
+      "accountNamePlaceholder": "e.g. Monobank, Cash USD",
+      "name": "Account Name",
+      "currency": "Currency",
+      "balance": "Current Balance",
+      "currentBalance": "Current Balance",
+      "balancePlaceholder": "$ 0.00",
+      "includeInTotal": "Include in total balance",
+      "selectIcon": "Select Icon",
+      "emojiInstruction": "Choose any emoji for your account"
+    },
+    "buttons": {
+      "next": "Next",
+      "back": "Back",
+      "create": "Create Account",
+      "saveAccount": "Save Account",
+      "select": "Select"
+    },
+    "errors": {
+      "nameRequired": "Account name is required",
+      "balanceRequired": "Balance is required"
+    }
+  },
+  "settings": {
+    "sections": {
+      "profile": "PROFILE",
+      "subscription": "SUBSCRIPTION",
+      "preferences": "PREFERENCES",
+      "support": "SUPPORT",
+      "account": "ACCOUNT"
+    },
+    "items": {
+      "name": "Name",
+      "choosePlan": "Choose Your Plan",
+      "freePlan": "Free Plan",
+      "currency": "Currency",
+      "categories": "Categories",
+      "categoriesSubtitle": "Manage expense categories",
+      "language": "Language",
+      "helpSupport": "Help & Support",
+      "helpSupportSubtitle": "FAQs, contact us",
+      "logout": "Log Out",
+      "deleteAccount": "Delete Account",
+      "deleteAccountSubtitle": "Permanently delete your account"
+    },
+    "sheets": {
+      "editName": "Edit Name",
+      "namePlaceholder": "Enter your name",
+      "selectCurrency": "Select Currency",
+      "selectLanguage": "Select Language",
+      "categories": "Categories",
+      "expense": "Expense",
+      "income": "Income",
+      "save": "Save"
+    },
+    "categories": {
+      "income": {
+        "salary": "Salary",
+        "freelance": "Freelance",
+        "sale": "Sale",
+        "gifts": "Gifts",
+        "rent": "Rent",
+        "otherIncome": "Other Income"
+      },
+      "expense": {
+        "groceries": "Groceries",
+        "dining": "Dining",
+        "clothes": "Clothes",
+        "rent": "Rent",
+        "education": "Education",
+        "gifts": "Gifts",
+        "gasFuel": "Gas/Fuel",
+        "health": "Health",
+        "entertainment": "Entertainment",
+        "transport": "Transport",
+        "subscriptions": "Subscriptions"
+      }
+    },
+    "footer": {
+      "version": "Version {{version}}",
+      "copyright": "© {{year}} Balanza. All rights reserved."
+    }
+  }
 }

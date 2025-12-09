@@ -1,4 +1,236 @@
 {
   "welcome": "Ласкаво просимо",
-  "hello_world": "Привіт, світе!"
+  "hello_world": "Привіт, світе!",
+  "auth": {
+    "login": {
+      "title": "Увійдіть у свій акаунт",
+      "trackExpenses": "Відстежуйте витрати",
+      "smartInsights": "Розумні звіти",
+      "emailPlaceholder": "Електронна пошта",
+      "passwordPlaceholder": "Пароль",
+      "loginButton": "Увійти",
+      "noAccount": "Немає акаунта? ",
+      "registerLink": "Зареєструватися"
+    },
+    "register": {
+      "title": "Створити новий акаунт",
+      "secure": "Безпечно",
+      "aiPowered": "ШІ-помічник",
+      "namePlaceholder": "Ім'я",
+      "emailPlaceholder": "Електронна пошта",
+      "passwordPlaceholder": "Пароль",
+      "terms": "Створюючи акаунт, ви погоджуєтеся з нашими Умовами надання послуг та Політикою конфіденційності.",
+      "createButton": "Створити акаунт",
+      "hasAccount": "Вже є акаунт? ",
+      "loginLink": "Увійти"
+    },
+    "validation": {
+      "emailRequired": "Електронна пошта є обов'язковою",
+      "emailInvalid": "Неправильна адреса електронної пошти",
+      "passwordRequired": "Пароль є обов'язковим",
+      "passwordMinLength": "Пароль повинен містити щонайменше 8 символів",
+      "passwordStrength": "Пароль повинен містити принаймні одну велику літеру, одну малу літеру, одну цифру та один спеціальний символ",
+      "nameRequired": "Ім'я є обов'язковим",
+      "nameMinLength": "Ім'я повинно містити щонайменше 2 символи"
+    },
+    "errors": {
+      "loginFailed": "Помилка входу",
+      "registrationFailed": "Помилка реєстрації",
+      "loginError": "Помилка входу",
+      "registrationError": "Помилка реєстрації"
+    }
+  },
+  "tabs": {
+    "balance": "Баланс",
+    "accounts": "Рахунки",
+    "groups": "Групи",
+    "analytics": "Аналітика",
+    "settings": "Налаштування"
+  },
+  "balance": {
+    "monthlyBudget": "Місячний бюджет",
+    "left": " залишилось",
+    "over": " перевищення",
+    "goals_one": "{{ count }} ціль",
+    "goals_few": "{{ count }} цілі",
+    "goals_many": "{{ count }} цілей",
+    "goals_other": "{{ count }} цілей",
+    "sharedExpenses": "Спільні витрати",
+    "recentGroups": "Останні групи та друзі",
+    "seeAllGroups": "Всі групи",
+    "recentTransactions": "ОСТАННІ ТРАНЗАКЦІЇ",
+    "seeAllTransactions": "Всі транзакції",
+    "customizeHome": "Налаштування головної сторінки",
+    "customizeHomeSubtitle": "Виберіть віджети для відображення та впорядкування.",
+    "widgets": {
+      "totalBalance": "Загальний баланс",
+      "monthlyBudget": "Місячний бюджет",
+      "financialGoals": "Фінансові цілі",
+      "sharedExpenses": "Спільні витрати",
+      "recentTransactions": "Останні транзакції"
+    }
+  },
+  "groups": {
+    "title": "Групи",
+    "addFriendOrGroup": "Додати друга або групу",
+    "chooseOption": "Оберіть варіант нижче",
+    "inviteFriend": "Запросити друга",
+    "inviteFriendDescription": "Додайте когось за ім'ям та контактом",
+    "createGroup": "Створити групу",
+    "createGroupDescription": "Згрупуйте друзів для поїздок або подій",
+    "inviteFriendTitle": "Запросити друга",
+    "inviteFriendSubtitle": "Запросіть когось, щоб ділитися витратами",
+    "createGroupTitle": "Створити групу",
+    "createGroupSubtitle": "Створіть групу для спільних витрат",
+    "friendName": "Ім'я друга",
+    "friendNamePlaceholder": "Введіть ім'я...",
+    "contactInformation": "Контактна інформація",
+    "contactPlaceholder": "Email або номер телефону...",
+    "groupName": "Назва групи",
+    "groupNamePlaceholder": "напр., Поїздка в Барселону, Обід в офісі...",
+    "groupIcon": "Іконка групи",
+    "tapToChangeIcon": "Натисніть, щоб змінити іконку",
+    "inviteFriendButton": "Запросити друга",
+    "createGroupButton": "Створити групу",
+    "pendingNote": "\uD83D\uDCA1 Ваш друг буде неактивним, поки він не зареєструється та не приєднається до balanza. Ви все одно можете додавати спільні витрати.",
+    "addFriendsNote": "\uD83D\uDCA1 Після створення групи ви зможете додати учасників зі свого списку друзів.",
+    "sections": {
+      "groups": "ГРУПИ",
+      "friends": "ДРУЗІ"
+    },
+    "settledUp": {
+      "title": "розраховано"
+    },
+    "balance": {
+      "youOwe": "ви винні",
+      "youreOwed": "вам винні",
+      "noExpenses": "нема спільних витрат",
+      "pending": "очікується",
+      "settledUp": "розраховано",
+      "members_one": "{{count}} учасник",
+      "members_few": "{{count}} учасники",
+      "members_many": "{{count}} учасників",
+      "members_other": "{{count}} учасників"
+    },
+    "validation": {
+      "nameRequired": "Ім'я обов'язкове",
+      "nameMinLength": "Ім'я має містити щонайменше 2 символи",
+      "contactRequired": "Контактна інформація обов'язкова",
+      "contactInvalid": "Будь ласка, введіть дійсну електронну адресу або номер телефону",
+      "groupNameRequired": "Назва групи обов'язкова",
+      "groupNameMinLength": "Назва групи має містити щонайменше 2 символи"
+    }
+  },
+  "accounts": {
+    "addAccount": "Додати рахунок",
+    "allAccounts": "ВСІ РАХУНКИ",
+    "totalBalance": "Загальний баланс",
+    "selectType": "Оберіть тип рахунку",
+    "selectAccountType": "Оберіть тип рахунку",
+    "accountDetails": "Деталі рахунку",
+    "accountsCount_one": "{{ count }} рахунок",
+    "accountsCount_few": "{{ count }} рахунки",
+    "accountsCount_many": "{{ count }} рахунків",
+    "accountsCount_other": "{{ count }} рахунків",
+    "groups": {
+      "cash": "Готівка",
+      "bank": "Банківські рахунки",
+      "credit_card": "Кредитні картки",
+      "investment": "Інвестиції"
+    },
+    "types": {
+      "cash": "Готівка",
+      "card": "Картка",
+      "crypto": "Криптовалюта",
+      "realEstate": "Нерухомість",
+      "cars": "Авто",
+      "credit": "Кредит",
+      "goal": "Ціль",
+      "other": "Інше"
+    },
+    "fields": {
+      "icon": "Іконка",
+      "accountName": "Назва рахунку",
+      "accountNamePlaceholder": "напр. готівка",
+      "name": "Назва рахунку",
+      "currency": "Валюта",
+      "balance": "Поточний баланс",
+      "currentBalance": "Поточний баланс",
+      "balancePlaceholder": "$ 0.00",
+      "includeInTotal": "Включити в загальний баланс",
+      "selectIcon": "Оберіть іконку",
+      "emojiInstruction": "Оберіть будь-який емодзі для рахунку"
+    },
+    "buttons": {
+      "next": "Далі",
+      "back": "Назад",
+      "create": "Створити рахунок",
+      "saveAccount": "Зберегти рахунок",
+      "select": "Обрати"
+    },
+    "errors": {
+      "nameRequired": "Назва рахунку обов'язкова",
+      "balanceRequired": "Баланс обов'язковий"
+    }
+  },
+  "settings": {
+    "sections": {
+      "profile": "ПРОФІЛЬ",
+      "subscription": "ПІДПИСКА",
+      "preferences": "НАЛАШТУВАННЯ",
+      "support": "ПІДТРИМКА",
+      "account": "ОБЛІКОВИЙ ЗАПИС"
+    },
+    "items": {
+      "name": "Ім'я",
+      "choosePlan": "Оберіть тарифний план",
+      "freePlan": "Безкоштовний план",
+      "currency": "Валюта",
+      "categories": "Категорії",
+      "categoriesSubtitle": "Керування категоріями витрат",
+      "language": "Мова",
+      "helpSupport": "Допомога і підтримка",
+      "helpSupportSubtitle": "Поширені запитання, зв'язатися з нами",
+      "logout": "Вийти",
+      "deleteAccount": "Видалити акаунт",
+      "deleteAccountSubtitle": "Безповоротно видалити ваш обліковий запис"
+    },
+    "sheets": {
+      "editName": "Редагувати ім'я",
+      "namePlaceholder": "Введіть ваше ім'я",
+      "selectCurrency": "Оберіть валюту",
+      "selectLanguage": "Оберіть мову",
+      "categories": "Категорії",
+      "expense": "Витрати",
+      "income": "Доходи",
+      "save": "Зберегти"
+    },
+    "categories": {
+      "income": {
+        "salary": "Зарплата",
+        "freelance": "Фріланс",
+        "sale": "Продаж",
+        "gifts": "Подарунки",
+        "rent": "Оренда",
+        "otherIncome": "Інший дохід"
+      },
+      "expense": {
+        "groceries": "Продукти",
+        "dining": "Ресторани",
+        "clothes": "Одяг",
+        "rent": "Оренда",
+        "education": "Освіта",
+        "gifts": "Подарунки",
+        "gasFuel": "Бензин/Паливо",
+        "health": "Здоров'я",
+        "entertainment": "Розваги",
+        "transport": "Транспорт",
+        "subscriptions": "Підписки"
+      }
+    },
+    "footer": {
+      "version": "Версія {{version}}",
+      "copyright": "© {{year}} Balanza. Всі права захищені."
+    }
+  }
 }
