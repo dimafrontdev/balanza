@@ -1,12 +1,14 @@
-import { useCallback, useMemo, useEffect } from 'react';
+import { useCallback, useMemo, useEffect, useRef } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import TotalBalanceWidget from '@/components/ui/accounts/TotalBalanceWidget';
 import MonthlyBudgetWidget from '@/components/ui/balance/MonthlyBudgetWidget';
 import SharedExpensesWidget from '@/components/ui/balance/SharedExpensesWidget';
 import FinancialGoalsWidget from '@/components/ui/balance/FinancialGoalsWidget';
 import RecentTransactionsWidget from '@/components/ui/balance/RecentTransactionsWidget';
+import SelectAccountsSheet from '@/components/sheets/SelectAccountsSheet';
 import { HomeWidgetConfig } from '@/components/sheets/CustomizeHomeSheet';
 import useSettingsStore from '@/store/settingsStore';
 import { formatAmount, convertCurrency } from '@/utils/currency';
@@ -25,7 +27,9 @@ import {
 export default function BalanceScreen() {
   const theme = useTheme();
   const { t } = useTranslation();
-  const { currency, homeWidgets, setHomeWidgets } = useSettingsStore();
+  const { currency, homeWidgets, setHomeWidgets, selectedAccountIds, setSelectedAccountIds } =
+    useSettingsStore();
+  const selectAccountsSheetRef = useRef<BottomSheetModal>(null);
 
   useEffect(() => {
     if (homeWidgets.length === 0) {
@@ -37,17 +41,26 @@ export default function BalanceScreen() {
     }
   }, [homeWidgets.length, setHomeWidgets, t]);
 
+  useEffect(() => {
+    if (selectedAccountIds.length === 0) {
+      setSelectedAccountIds(MOCK_ACCOUNTS.map(acc => acc.id));
+    }
+  }, [selectedAccountIds.length, setSelectedAccountIds]);
+
   const formatAmountCallback = useCallback(
     (amount: number) => formatAmount(amount, currency),
     [currency],
   );
 
   const totalBalance = useMemo(() => {
-    return MOCK_ACCOUNTS.reduce((sum, account) => {
-      const converted = convertCurrency(account.balance, account.currency, currency.code);
+    const accountsToInclude = MOCK_ACCOUNTS.filter(acc =>
+      selectedAccountIds.includes(acc.id),
+    );
+    return accountsToInclude.reduce((sum, account) => {
+      const converted = convertCurrency(account.balance, account.currency.code, currency.code);
       return sum + converted;
     }, 0);
-  }, [currency.code]);
+  }, [currency.code, selectedAccountIds]);
 
   const monthlyBudget = 1000;
   const monthlySpent = 1500;
@@ -89,6 +102,17 @@ export default function BalanceScreen() {
     [homeWidgets],
   );
 
+  const handleOpenSelectAccounts = useCallback(() => {
+    selectAccountsSheetRef.current?.present();
+  }, []);
+
+  const handleSaveSelectedAccounts = useCallback(
+    (accountIds: string[]) => {
+      setSelectedAccountIds(accountIds);
+    },
+    [setSelectedAccountIds],
+  );
+
   const renderWidget = useCallback(
     (widget: HomeWidgetConfig) => {
       switch (widget.id) {
@@ -100,6 +124,7 @@ export default function BalanceScreen() {
                 changeAmount={1250}
                 formatAmount={formatAmountCallback}
                 chartData={MOCK_BALANCE_HISTORY}
+                onPress={handleOpenSelectAccounts}
               />
             </View>
           );
@@ -160,6 +185,7 @@ export default function BalanceScreen() {
       totalOwed,
       recentSharedItems,
       recentTransactions,
+      handleOpenSelectAccounts,
     ],
   );
 
@@ -171,6 +197,12 @@ export default function BalanceScreen() {
         ))}
         <View style={styles.bottomSpacer} />
       </ScrollView>
+      <SelectAccountsSheet
+        ref={selectAccountsSheetRef}
+        accounts={MOCK_ACCOUNTS}
+        selectedAccountIds={selectedAccountIds}
+        onSave={handleSaveSelectedAccounts}
+      />
     </View>
   );
 }

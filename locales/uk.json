@@ -1,6 +1,10 @@
 {
   "welcome": "Ласкаво просимо",
   "hello_world": "Привіт, світе!",
+  "common": {
+    "selectAll": "Вибрати все",
+    "deselectAll": "Зняти все"
+  },
   "auth": {
     "login": {
       "title": "Увійдіть у свій акаунт",
@@ -128,6 +132,8 @@
     "selectType": "Оберіть тип рахунку",
     "selectAccountType": "Оберіть тип рахунку",
     "accountDetails": "Деталі рахунку",
+    "selectAccounts": "Оберіть рахунки",
+    "selectAccountsSubtitle": "Виберіть рахунки для включення в загальний баланс",
     "accountsCount_one": "{{ count }} рахунок",
     "accountsCount_few": "{{ count }} рахунки",
     "accountsCount_many": "{{ count }} рахунків",

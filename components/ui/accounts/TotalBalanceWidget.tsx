@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { LineChart } from 'react-native-gifted-charts';
 import { useTranslation } from 'react-i18next';
 import { IconPositiveChange, IconNegativeChange } from '@/assets/icons';
@@ -9,6 +9,7 @@ interface TotalBalanceWidgetProps {
   changeAmount: number;
   formatAmount: (amount: number) => string;
   chartData?: number[];
+  onPress?: () => void;
 }
 
 export default function TotalBalanceWidget({
@@ -16,13 +17,14 @@ export default function TotalBalanceWidget({
   changeAmount,
   formatAmount,
   chartData: chartDataValues,
+  onPress,
 }: TotalBalanceWidgetProps) {
   const { t } = useTranslation();
   const chartData = generateLast6MonthsData(chartDataValues || []);
   const isPositiveChange = changeAmount >= 0;
 
-  return (
-    <View style={styles.container}>
+  const content = (
+    <>
       <View style={styles.header}>
         <Text style={styles.label}>{t('accounts.totalBalance')}</Text>
         <View
@@ -64,8 +66,18 @@ export default function TotalBalanceWidget({
           yAxisOffset={1}
         />
       </View>
-    </View>
+    </>
   );
+
+  if (onPress) {
+    return (
+      <Pressable onPress={onPress} style={styles.container}>
+        {content}
+      </Pressable>
+    );
+  }
+
+  return <View style={styles.container}>{content}</View>;
 }
 
 const styles = StyleSheet.create({

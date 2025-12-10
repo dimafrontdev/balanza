@@ -3,7 +3,6 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Account } from '@/mocks/accounts';
 import { Currency } from '@/store/settingsStore';
-import { currencies } from '@/components/sheets/AddAccountSheet/constants';
 
 interface AccountItemProps {
   account: Account;
@@ -11,8 +10,7 @@ interface AccountItemProps {
 }
 
 export default function AccountItem({ account, formatAmount }: AccountItemProps) {
-  const currency = currencies.find(el => el.symbol === account.currency);
-  const total = formatAmount(account.balance, currency);
+  const total = formatAmount(account.balance, account.currency);
   const isNegative = total.startsWith('-');
 
   return (
@@ -22,7 +20,7 @@ export default function AccountItem({ account, formatAmount }: AccountItemProps)
       </View>
       <View style={styles.title}>
         <Text style={styles.name}>{account.name}</Text>
-        <Text style={styles.code}>{account.code}</Text>
+        <Text style={styles.code}>{account.currency.code}</Text>
       </View>
       <Text style={[styles.balance, isNegative && styles.balanceNegative]}>{total}</Text>
     </TouchableOpacity>

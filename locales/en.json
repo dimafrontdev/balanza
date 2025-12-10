@@ -1,6 +1,10 @@
 {
   "welcome": "Welcome",
   "hello_world": "Hello World!",
+  "common": {
+    "selectAll": "Select All",
+    "deselectAll": "Deselect All"
+  },
   "auth": {
     "login": {
       "title": "Welcome back,\nyou've been missed!",
@@ -123,6 +127,8 @@
     "selectType": "Select Account Type",
     "selectAccountType": "Select account type",
     "accountDetails": "Account Details",
+    "selectAccounts": "Select Accounts",
+    "selectAccountsSubtitle": "Choose which accounts to include in your total balance",
     "accountsCount_one": "{{ count }} account",
     "accountsCount_other": "{{ count }} accounts",
     "groups": {

@@ -21,9 +21,11 @@ interface SettingsState {
   currency: Currency;
   language: string;
   homeWidgets: HomeWidgetConfig[];
+  selectedAccountIds: string[];
   setCurrency: (currency: Currency) => void;
   setLanguage: (language: string) => void;
   setHomeWidgets: (widgets: HomeWidgetConfig[]) => void;
+  setSelectedAccountIds: (accountIds: string[]) => void;
 }
 
 const useSettingsStore = create<SettingsState>()(
@@ -32,9 +34,11 @@ const useSettingsStore = create<SettingsState>()(
       currency: currencies[0],
       language: 'en',
       homeWidgets: [],
+      selectedAccountIds: [],
       setCurrency: currency => set({ currency }),
       setLanguage: language => set({ language }),
       setHomeWidgets: widgets => set({ homeWidgets: widgets }),
+      setSelectedAccountIds: accountIds => set({ selectedAccountIds: accountIds }),
     }),
     {
       name: 'settings-storage',

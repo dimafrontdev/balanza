@@ -45,7 +45,7 @@ export default function AccountsScreen() {
 
   const totalBalance = useMemo(() => {
     return MOCK_ACCOUNTS.reduce((sum, account) => {
-      const converted = convertCurrency(account.balance, account.currency, currency.code);
+      const converted = convertCurrency(account.balance, account.currency.code, currency.code);
       return sum + converted;
     }, 0);
   }, [currency.code]);
@@ -64,7 +64,7 @@ export default function AccountsScreen() {
 
     return Object.entries(groups).map(([type, accounts]) => {
       const total = accounts.reduce((sum, acc) => {
-        const converted = convertCurrency(acc.balance, acc.currency, currency.code);
+        const converted = convertCurrency(acc.balance, acc.currency.code, currency.code);
         return sum + converted;
       }, 0);
       const config = ACCOUNT_TYPE_CONFIG[type as AccountType];
