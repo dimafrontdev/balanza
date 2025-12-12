@@ -258,5 +258,17 @@
       "version": "Версія {{version}}",
       "copyright": "© {{year}} Balanza. Всі права захищені."
     }
+  },
+  "analytics": {
+    "byCategories": "За категоріями",
+    "dynamic": "Динаміка",
+    "expenseByCategories": "Витрати за категоріями",
+    "total": "Всього",
+    "totalIncome": "Загальний дохід",
+    "totalExpense": "Загальні витрати",
+    "netBalance": "Чистий капітал",
+    "incomeVsExpenses": "Дохід проти витрат",
+    "income": "Дохід",
+    "expense": "Витрати"
   }
 }

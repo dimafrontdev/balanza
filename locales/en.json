@@ -247,5 +247,17 @@
       "version": "Version {{version}}",
       "copyright": "© {{year}} Balanza. All rights reserved."
     }
+  },
+  "analytics": {
+    "byCategories": "By Categories",
+    "dynamic": "Dynamic",
+    "expenseByCategories": "Expense by Categories",
+    "total": "Total",
+    "totalIncome": "Total Income",
+    "totalExpense": "Total Expense",
+    "netBalance": "Net Balance",
+    "incomeVsExpenses": "Income vs Expenses",
+    "income": "Income",
+    "expense": "Expense"
   }
 }
