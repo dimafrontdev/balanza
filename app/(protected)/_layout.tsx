@@ -99,7 +99,6 @@ export default function ProtectedLayout() {
             fontFamily: 'Bitter-Regular',
             fontSize: 18,
             color: '#101828',
-            fontWeight: '400',
           },
           headerShadowVisible: false,
           headerBackVisible: false,

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { LineChart } from 'react-native-gifted-charts';
 import { useTranslation } from 'react-i18next';
 import { IconPositiveChange, IconNegativeChange } from '@/assets/icons';
@@ -71,9 +71,9 @@ export default function TotalBalanceWidget({
 
   if (onPress) {
     return (
-      <Pressable onPress={onPress} style={styles.container}>
+      <TouchableOpacity onPress={onPress} style={styles.container}>
         {content}
-      </Pressable>
+      </TouchableOpacity>
     );
   }
 

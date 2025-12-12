@@ -9,6 +9,7 @@ import SharedExpensesWidget from '@/components/ui/balance/SharedExpensesWidget';
 import FinancialGoalsWidget from '@/components/ui/balance/FinancialGoalsWidget';
 import RecentTransactionsWidget from '@/components/ui/balance/RecentTransactionsWidget';
 import SelectAccountsSheet from '@/components/sheets/SelectAccountsSheet';
+import TransactionsSheet from '@/components/sheets/TransactionsSheet';
 import { HomeWidgetConfig } from '@/components/sheets/CustomizeHomeSheet';
 import useSettingsStore from '@/store/settingsStore';
 import { formatAmount, convertCurrency } from '@/utils/currency';
@@ -30,14 +31,11 @@ export default function BalanceScreen() {
   const { currency, homeWidgets, setHomeWidgets, selectedAccountIds, setSelectedAccountIds } =
     useSettingsStore();
   const selectAccountsSheetRef = useRef<BottomSheetModal>(null);
+  const transactionsSheetRef = useRef<BottomSheetModal>(null);
 
   useEffect(() => {
     if (homeWidgets.length === 0) {
-      const translatedWidgets = DEFAULT_HOME_WIDGETS.map(widget => ({
-        ...widget,
-        title: t(widget.title),
-      }));
-      setHomeWidgets(translatedWidgets);
+      setHomeWidgets(DEFAULT_HOME_WIDGETS);
     }
   }, [homeWidgets.length, setHomeWidgets, t]);
 
@@ -53,9 +51,7 @@ export default function BalanceScreen() {
   );
 
   const totalBalance = useMemo(() => {
-    const accountsToInclude = MOCK_ACCOUNTS.filter(acc =>
-      selectedAccountIds.includes(acc.id),
-    );
+    const accountsToInclude = MOCK_ACCOUNTS.filter(acc => selectedAccountIds.includes(acc.id));
     return accountsToInclude.reduce((sum, account) => {
       const converted = convertCurrency(account.balance, account.currency.code, currency.code);
       return sum + converted;
@@ -104,6 +100,10 @@ export default function BalanceScreen() {
 
   const handleOpenSelectAccounts = useCallback(() => {
     selectAccountsSheetRef.current?.present();
+  }, []);
+
+  const handleOpenTransactions = useCallback(() => {
+    transactionsSheetRef.current?.present();
   }, []);
 
   const handleSaveSelectedAccounts = useCallback(
@@ -168,6 +168,7 @@ export default function BalanceScreen() {
               <RecentTransactionsWidget
                 transactions={recentTransactions}
                 formatAmount={formatAmountCallback}
+                onSeeAll={handleOpenTransactions}
               />
             </View>
           );
@@ -186,6 +187,7 @@ export default function BalanceScreen() {
       recentSharedItems,
       recentTransactions,
       handleOpenSelectAccounts,
+      handleOpenTransactions,
     ],
   );
 
@@ -203,6 +205,7 @@ export default function BalanceScreen() {
         selectedAccountIds={selectedAccountIds}
         onSave={handleSaveSelectedAccounts}
       />
+      <TransactionsSheet ref={transactionsSheetRef} formatAmount={formatAmountCallback} />
     </View>
   );
 }

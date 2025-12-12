@@ -6,12 +6,7 @@ import { useTranslation } from 'react-i18next';
 import FloatingActionButton from '@/components/ui/common/FloatingActionButton';
 import AddFriendOrGroupSheet from '@/components/sheets/AddFriendOrGroupSheet';
 import { IconAddPerson } from '@/assets/icons';
-import {
-  BalanceSummary,
-  SectionHeader,
-  ListItem,
-  SettledUpSection,
-} from '@/components/ui/groups';
+import { BalanceSummary, SectionHeader, ListItem, SettledUpSection } from '@/components/ui/groups';
 import { MOCK_GROUPS, MOCK_FRIENDS, Friend, Group } from '@/mocks';
 import useSettingsStore from '@/store/settingsStore';
 import { formatAmount } from '@/utils/currency';
@@ -41,7 +36,7 @@ export default function GroupsScreen() {
       friend => friend.balance === 0 && friend.status === 'active',
     );
     const settledItems: (Friend | Group)[] = [...settledGroups, ...settledFriends];
-    
+
     return { activeGroups, activeFriends, settledItems };
   }, []);
 
@@ -82,7 +77,11 @@ export default function GroupsScreen() {
         {activeGroups.length > 0 && (
           <View style={styles.listSection}>
             {activeGroups.map(group => (
-              <ListItem key={group.id} item={group} formatAmount={formatAmountCallback} />
+              <ListItem
+                key={`group-${group.id}`}
+                item={group}
+                formatAmount={formatAmountCallback}
+              />
             ))}
           </View>
         )}
@@ -91,16 +90,26 @@ export default function GroupsScreen() {
         {activeFriends.length > 0 && (
           <View style={styles.listSection}>
             {activeFriends.map(friend => (
-              <ListItem key={friend.id} item={friend} formatAmount={formatAmountCallback} />
+              <ListItem
+                key={`friend-${friend.id}`}
+                item={friend}
+                formatAmount={formatAmountCallback}
+              />
             ))}
           </View>
         )}
 
         {settledItems.length > 0 && (
           <SettledUpSection title={t('groups.settledUp.title')} count={settledItems.length}>
-            {settledItems.map(item => (
-              <ListItem key={item.id} item={item} formatAmount={formatAmountCallback} />
-            ))}
+            {settledItems.map(item => {
+              return (
+                <ListItem
+                  key={`${item.name}-${item.id}}`}
+                  item={item}
+                  formatAmount={formatAmountCallback}
+                />
+              );
+            })}
           </SettledUpSection>
         )}
       </ScrollView>

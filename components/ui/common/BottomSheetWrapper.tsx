@@ -30,7 +30,6 @@ export default function BottomSheetWrapper({
     <BottomSheetModal
       ref={sheetRef}
       snapPoints={snapPoints}
-      enablePanDownToClose
       backdropComponent={renderBackdrop}
       keyboardBehavior={keyboardBehavior}
       keyboardBlurBehavior={keyboardBlurBehavior}

@@ -3,7 +3,9 @@
   "hello_world": "Привіт, світе!",
   "common": {
     "selectAll": "Вибрати все",
-    "deselectAll": "Зняти все"
+    "deselectAll": "Зняти все",
+    "today": "Сьогодні",
+    "yesterday": "Вчора"
   },
   "auth": {
     "login": {
@@ -64,6 +66,24 @@
     "seeAllGroups": "Всі групи",
     "recentTransactions": "ОСТАННІ ТРАНЗАКЦІЇ",
     "seeAllTransactions": "Всі транзакції",
+    "recurringTransactions": "Регулярні транзакції",
+    "transactions": "транзакцій",
+    "transactionsCount_one": "{{count}} транзакція",
+    "transactionsCount_few": "{{count}} транзакції",
+    "transactionsCount_many": "{{count}} транзакцій",
+    "transactionsCount_other": "{{count}} транзакцій",
+    "next": "Наступна",
+    "locale": "uk-UA",
+    "daysLeftCount_one": "{{count}} день залишився",
+    "daysLeftCount_few": "{{count}} дні залишилось",
+    "daysLeftCount_many": "{{count}} днів залишилось",
+    "daysLeftCount_other": "{{count}} днів залишилось",
+    "frequency": {
+      "daily": "щоденно",
+      "weekly": "щотижня",
+      "monthly": "щомісяця",
+      "yearly": "щороку"
+    },
     "customizeHome": "Налаштування головної сторінки",
     "customizeHomeSubtitle": "Виберіть віджети для відображення та впорядкування.",
     "widgets": {

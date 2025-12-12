@@ -64,9 +64,9 @@ export default function Accordion({
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity 
-        style={styles.header} 
-        onPress={toggleAccordion} 
+      <TouchableOpacity
+        style={styles.header}
+        onPress={toggleAccordion}
         activeOpacity={0.7}
         disabled={disabled}>
         <View style={styles.headerContent}>{header}</View>
@@ -113,9 +113,9 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginBottom: 12,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.08,
-    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
     elevation: 2,
   },
   header: {

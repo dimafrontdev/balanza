@@ -3,7 +3,9 @@
   "hello_world": "Hello World!",
   "common": {
     "selectAll": "Select All",
-    "deselectAll": "Deselect All"
+    "deselectAll": "Deselect All",
+    "today": "Today",
+    "yesterday": "Yesterday"
   },
   "auth": {
     "login": {
@@ -61,6 +63,20 @@
     "seeAllGroups": "See All Groups",
     "recentTransactions": "RECENT TRANSACTIONS",
     "seeAllTransactions": "See All Transactions",
+    "recurringTransactions": "Recurring Transactions",
+    "transactions": "transactions",
+    "transactionsCount_one": "{{count}} transaction",
+    "transactionsCount_other": "{{count}} transactions",
+    "next": "Next",
+    "locale": "en-US",
+    "daysLeftCount_one": "{{count}} day left",
+    "daysLeftCount_other": "{{count}} days left",
+    "frequency": {
+      "daily": "daily",
+      "weekly": "weekly",
+      "monthly": "monthly",
+      "yearly": "yearly"
+    },
     "customizeHome": "Customize Home",
     "customizeHomeSubtitle": "Select widgets to display and arrange their order.",
     "widgets": {

@@ -10,13 +10,6 @@ import { useBottomSheet } from '@/hooks/useBottomSheet';
 import { Switch } from 'react-native-paper';
 import { HomeWidgetConfig } from '@/store/settingsStore';
 
-export type HomeWidget =
-  | 'totalBalance'
-  | 'monthlyBudget'
-  | 'financialGoals'
-  | 'sharedExpenses'
-  | 'recentTransactions';
-
 export type { HomeWidgetConfig };
 
 interface CustomizeHomeSheetProps {
@@ -69,7 +62,7 @@ const CustomizeHomeSheet = forwardRef<BottomSheetModal, CustomizeHomeSheetProps>
           </View>
 
           <Text style={[styles.widgetTitle, !item.visible && styles.widgetTitleDisabled]}>
-            {item.title}
+            {t(item.title)}
           </Text>
 
           <Switch

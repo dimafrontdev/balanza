@@ -6,11 +6,13 @@ import { Transaction } from '@/mocks';
 interface RecentTransactionsWidgetProps {
   transactions: Transaction[];
   formatAmount: (amount: number) => string;
+  onSeeAll: () => void;
 }
 
 export default function RecentTransactionsWidget({
   transactions,
   formatAmount,
+  onSeeAll,
 }: RecentTransactionsWidgetProps) {
   const { t } = useTranslation();
 
@@ -18,7 +20,7 @@ export default function RecentTransactionsWidget({
     <View>
       <View style={styles.transactionHeaderRow}>
         <Text style={styles.sectionHeader}>{t('balance.recentTransactions')}</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onSeeAll}>
           <Text style={styles.seeAllText}>{t('balance.seeAllTransactions')}</Text>
         </TouchableOpacity>
       </View>
