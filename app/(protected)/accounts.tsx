@@ -1,6 +1,6 @@
 import { useRef, useMemo, useCallback } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import { Icon, useTheme } from 'react-native-paper';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from 'react-i18next';
 import FloatingActionButton from '@/components/ui/common/FloatingActionButton';
@@ -115,7 +115,10 @@ export default function AccountsScreen() {
         <View style={styles.bottomSpacer} />
       </ScrollView>
 
-      <FloatingActionButton onPress={handleAddAccount} />
+      <FloatingActionButton
+        onPress={handleAddAccount}
+        icon={<Icon source="credit-card-plus" color="white" size={24} />}
+      />
       <AddAccountSheet ref={addAccountSheetRef} />
     </View>
   );

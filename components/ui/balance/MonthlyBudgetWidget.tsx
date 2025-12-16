@@ -1,16 +1,18 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 interface MonthlyBudgetWidgetProps {
   budgetAmount: number;
   spentAmount: number;
   formatAmount: (amount: number) => string;
+  onPress?: () => void;
 }
 
 export default function MonthlyBudgetWidget({
   budgetAmount,
   spentAmount,
   formatAmount,
+  onPress,
 }: MonthlyBudgetWidgetProps) {
   const { t } = useTranslation();
   const percentageSpent = Math.min((spentAmount / budgetAmount) * 100, 100);
@@ -18,7 +20,7 @@ export default function MonthlyBudgetWidget({
   const leftAmount = budgetAmount - spentAmount;
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress} activeOpacity={0.7}>
       <Text style={styles.title}>{t('balance.monthlyBudget')}</Text>
 
       <Text style={[styles.spentAmount, isOverBudget ? styles.amountOver : styles.amountNormal]}>
@@ -39,7 +41,7 @@ export default function MonthlyBudgetWidget({
           ]}
         />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

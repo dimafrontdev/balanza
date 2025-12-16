@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   },
   selectedPercentage: {
     fontSize: 20,
-    fontWeight: '700',
+
     color: '#101828',
     fontFamily: 'Bitter-Regular',
   },

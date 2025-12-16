@@ -1,7 +1,7 @@
 import { forwardRef, useState } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from 'react-i18next';
 import BottomSheetWrapper from '@/components/ui/common/BottomSheetWrapper';
 import StyledButton from '@/components/ui/common/StyledButton';
@@ -48,7 +48,7 @@ const CurrencySheet = forwardRef<BottomSheetModal, CurrencySheetProps>(
         stackBehavior="push"
         onDismiss={() => setSelectedCurrency(null)}
         renderBackdrop={renderBackdrop}>
-        <BottomSheetView style={styles.bottomSheetContent}>
+        <View style={styles.bottomSheetContent}>
           <Text style={styles.bottomSheetTitle}>{t('settings.sheets.selectCurrency')}</Text>
           <ScrollView style={styles.currencyList} showsVerticalScrollIndicator={false}>
             {currencies.map(curr => (
@@ -72,7 +72,7 @@ const CurrencySheet = forwardRef<BottomSheetModal, CurrencySheetProps>(
           {showSaveButton && (
             <StyledButton title={t('settings.sheets.save')} onPress={handleSave} size="medium" />
           )}
-        </BottomSheetView>
+        </View>
       </BottomSheetWrapper>
     );
   },

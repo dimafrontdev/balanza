@@ -8,8 +8,11 @@ import MonthlyBudgetWidget from '@/components/ui/balance/MonthlyBudgetWidget';
 import SharedExpensesWidget from '@/components/ui/balance/SharedExpensesWidget';
 import FinancialGoalsWidget from '@/components/ui/balance/FinancialGoalsWidget';
 import RecentTransactionsWidget from '@/components/ui/balance/RecentTransactionsWidget';
+import FloatingActionButton from '@/components/ui/common/FloatingActionButton';
 import SelectAccountsSheet from '@/components/sheets/SelectAccountsSheet';
 import TransactionsSheet from '@/components/sheets/TransactionsSheet';
+import AddTransactionSheet from '@/components/sheets/AddTransactionSheet';
+import BudgetSheet from '@/components/sheets/BudgetSheet';
 import { HomeWidgetConfig } from '@/components/sheets/CustomizeHomeSheet';
 import useSettingsStore from '@/store/settingsStore';
 import { formatAmount, convertCurrency } from '@/utils/currency';
@@ -32,6 +35,8 @@ export default function BalanceScreen() {
     useSettingsStore();
   const selectAccountsSheetRef = useRef<BottomSheetModal>(null);
   const transactionsSheetRef = useRef<BottomSheetModal>(null);
+  const addTransactionSheetRef = useRef<BottomSheetModal>(null);
+  const budgetSheetRef = useRef<BottomSheetModal>(null);
 
   useEffect(() => {
     if (homeWidgets.length === 0) {
@@ -106,6 +111,10 @@ export default function BalanceScreen() {
     transactionsSheetRef.current?.present();
   }, []);
 
+  const handleAddTransaction = useCallback(() => {
+    addTransactionSheetRef.current?.present();
+  }, []);
+
   const handleSaveSelectedAccounts = useCallback(
     (accountIds: string[]) => {
       setSelectedAccountIds(accountIds);
@@ -136,6 +145,7 @@ export default function BalanceScreen() {
                 budgetAmount={monthlyBudget}
                 spentAmount={monthlySpent}
                 formatAmount={formatAmountCallback}
+                onPress={() => budgetSheetRef.current?.present()}
               />
             </View>
           );
@@ -206,6 +216,9 @@ export default function BalanceScreen() {
         onSave={handleSaveSelectedAccounts}
       />
       <TransactionsSheet ref={transactionsSheetRef} formatAmount={formatAmountCallback} />
+      <AddTransactionSheet ref={addTransactionSheetRef} />
+      <BudgetSheet ref={budgetSheetRef} currentBudget={monthlyBudget} currency={currency} />
+      <FloatingActionButton onPress={handleAddTransaction} />
     </View>
   );
 }

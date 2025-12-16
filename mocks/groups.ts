@@ -20,7 +20,7 @@ export const MOCK_FRIENDS: Friend[] = [
     id: '1',
     name: 'Sarah Johnson',
     icon: '',
-    balance: 45.50,
+    balance: 45.5,
     status: 'active',
   },
   {
@@ -41,7 +41,7 @@ export const MOCK_FRIENDS: Friend[] = [
     id: '4',
     name: 'Alex Rodriguez',
     icon: '',
-    balance: 120.00,
+    balance: 120.0,
     status: 'active',
   },
   {
@@ -79,7 +79,7 @@ export const MOCK_GROUPS: Group[] = [
     id: '2',
     name: 'Office Lunch',
     icon: '🍔',
-    balance: -67.80,
+    balance: -67.8,
     membersCount: 8,
   },
   {
@@ -93,7 +93,7 @@ export const MOCK_GROUPS: Group[] = [
     id: '4',
     name: 'Movie Night',
     icon: '🎬',
-    balance: 15.50,
+    balance: 15.5,
     membersCount: 4,
   },
   {

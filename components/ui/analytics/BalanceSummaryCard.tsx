@@ -34,24 +34,18 @@ export default function BalanceSummaryCard({
       {isSingleColumn ? (
         <View style={styles.singleBalanceItem}>
           <Text style={styles.balanceLabel}>{leftLabel}</Text>
-          <Text style={[styles.balanceAmount, getAmountColor()]}>
-            {leftAmount}
-          </Text>
+          <Text style={[styles.balanceAmount, getAmountColor()]}>{leftAmount}</Text>
         </View>
       ) : (
         <>
           <View style={styles.balanceItem}>
             <Text style={styles.balanceLabel}>{leftLabel}</Text>
-            <Text style={[styles.balanceAmount, styles.owedAmount]}>
-              {leftAmount}
-            </Text>
+            <Text style={[styles.balanceAmount, styles.owedAmount]}>{leftAmount}</Text>
           </View>
           <View style={styles.separator} />
           <View style={styles.balanceItem}>
             <Text style={styles.balanceLabel}>{rightLabel}</Text>
-            <Text style={[styles.balanceAmount, styles.oweAmount]}>
-              {rightAmount}
-            </Text>
+            <Text style={[styles.balanceAmount, styles.oweAmount]}>{rightAmount}</Text>
           </View>
         </>
       )}
@@ -89,7 +83,6 @@ const styles = StyleSheet.create({
   balanceAmount: {
     fontSize: 20,
     fontFamily: 'Bitter-Regular',
-    fontWeight: '700',
   },
   oweAmount: {
     color: '#EF4444',

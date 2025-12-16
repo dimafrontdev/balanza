@@ -1,7 +1,7 @@
 import { forwardRef, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -70,7 +70,7 @@ const AddAccountSheet = forwardRef<BottomSheetModal>((_, ref) => {
       snapPoints={['90%']}
       renderBackdrop={renderBackdrop}
       onDismiss={handleSheetDismiss}>
-      <BottomSheetView style={styles.bottomSheetContent}>
+      <View style={styles.bottomSheetContent}>
         <View style={styles.header}>
           {step === 2 && (
             <TouchableOpacity onPress={handleBack} style={styles.backButton}>
@@ -87,7 +87,7 @@ const AddAccountSheet = forwardRef<BottomSheetModal>((_, ref) => {
         ) : (
           <AccountDetailsStep control={control} errors={errors} onSubmit={handleSubmit(onSubmit)} />
         )}
-      </BottomSheetView>
+      </View>
     </BottomSheetWrapper>
   );
 });
@@ -99,7 +99,6 @@ export default AddAccountSheet;
 const styles = StyleSheet.create({
   bottomSheetContent: {
     flex: 1,
-    minHeight: '100%',
     paddingHorizontal: 24,
     paddingTop: 8,
   },

@@ -1,7 +1,7 @@
 import { forwardRef, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -81,7 +81,7 @@ const AddFriendOrGroupSheet = forwardRef<BottomSheetModal>((_, ref) => {
       snapPoints={['80%']}
       renderBackdrop={renderBackdrop}
       onDismiss={handleSheetDismiss}>
-      <BottomSheetView style={styles.bottomSheetContent}>
+      <View style={styles.bottomSheetContent}>
         <View style={styles.header}>
           {step === 2 && (
             <TouchableOpacity onPress={handleBack} style={styles.backButton}>
@@ -106,7 +106,7 @@ const AddFriendOrGroupSheet = forwardRef<BottomSheetModal>((_, ref) => {
             onSubmit={groupForm.handleSubmit(onSubmitGroup)}
           />
         )}
-      </BottomSheetView>
+      </View>
     </BottomSheetWrapper>
   );
 });
@@ -118,7 +118,6 @@ export default AddFriendOrGroupSheet;
 const styles = StyleSheet.create({
   bottomSheetContent: {
     flex: 1,
-    minHeight: '100%',
     paddingHorizontal: 24,
     paddingTop: 8,
   },
@@ -134,7 +133,7 @@ const styles = StyleSheet.create({
     left: 0,
     padding: 8,
     backgroundColor: '#F3F4F6',
-    borderRadius: 50,
+    borderRadius: 20,
   },
   bottomSheetTitle: {
     fontSize: 18,

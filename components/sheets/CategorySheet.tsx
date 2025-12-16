@@ -136,48 +136,70 @@ interface Category {
   color: string;
 }
 
-const CategorySheet = forwardRef<BottomSheetModal>((_, ref) => {
-  const { t } = useTranslation();
-  const { renderBackdrop } = useBottomSheet(['80%']);
-  const [categories] = useState<Category[]>(defaultCategories);
-  const [selectedType, setSelectedType] = useState<'Income' | 'Expense'>('Expense');
+interface CategorySheetProps {
+  onSelect?: (category: string, icon: string) => void;
+  selectedCategoryName?: string;
+}
 
-  const filteredCategories = categories.filter(cat => cat.type === selectedType);
+const CategorySheet = forwardRef<BottomSheetModal, CategorySheetProps>(
+  ({ onSelect, selectedCategoryName }, ref) => {
+    const { t } = useTranslation();
+    const { renderBackdrop } = useBottomSheet(['80%']);
+    const [categories] = useState<Category[]>(defaultCategories);
+    const [selectedType, setSelectedType] = useState<'Income' | 'Expense'>('Expense');
 
-  return (
-    <BottomSheetWrapper sheetRef={ref} snapPoints={['80%']} renderBackdrop={renderBackdrop}>
-      <BottomSheetView style={styles.bottomSheetContent}>
-        <Text style={styles.bottomSheetTitle}>{t('settings.sheets.categories')}</Text>
-        <View style={styles.toggleContainer}>
-          <TouchableOpacity
-            style={[styles.toggleButton, selectedType === 'Expense' && styles.toggleButtonActive]}
-            onPress={() => setSelectedType('Expense')}>
-            <Text
-              style={[styles.toggleText, selectedType === 'Expense' && styles.toggleTextActive]}>
-              {t('settings.sheets.expense')}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.toggleButton, selectedType === 'Income' && styles.toggleButtonActive]}
-            onPress={() => setSelectedType('Income')}>
-            <Text style={[styles.toggleText, selectedType === 'Income' && styles.toggleTextActive]}>
-              {t('settings.sheets.income')}
-            </Text>
-          </TouchableOpacity>
-        </View>
+    const filteredCategories = categories.filter(cat => cat.type === selectedType);
 
-        <ScrollView style={styles.categoryList} showsVerticalScrollIndicator={false}>
-          {filteredCategories.map(category => (
-            <View key={category.id} style={styles.categoryItem}>
-              <Text style={styles.categoryIconText}>{category.icon}</Text>
-              <Text style={styles.categoryName}>{t(category.nameKey)}</Text>
-            </View>
-          ))}
-        </ScrollView>
-      </BottomSheetView>
-    </BottomSheetWrapper>
-  );
-});
+    const handleCategorySelect = (category: Category) => {
+      onSelect?.(t(category.nameKey), category.icon);
+    };
+
+    return (
+      <BottomSheetWrapper
+        sheetRef={ref}
+        snapPoints={['80%']}
+        renderBackdrop={renderBackdrop}
+        stackBehavior="push">
+        <BottomSheetView style={styles.bottomSheetContent}>
+          <Text style={styles.bottomSheetTitle}>{t('settings.sheets.categories')}</Text>
+          <View style={styles.toggleContainer}>
+            <TouchableOpacity
+              style={[styles.toggleButton, selectedType === 'Expense' && styles.toggleButtonActive]}
+              onPress={() => setSelectedType('Expense')}>
+              <Text
+                style={[styles.toggleText, selectedType === 'Expense' && styles.toggleTextActive]}>
+                {t('settings.sheets.expense')}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.toggleButton, selectedType === 'Income' && styles.toggleButtonActive]}
+              onPress={() => setSelectedType('Income')}>
+              <Text
+                style={[styles.toggleText, selectedType === 'Income' && styles.toggleTextActive]}>
+                {t('settings.sheets.income')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <ScrollView style={styles.categoryList} showsVerticalScrollIndicator={false}>
+            {filteredCategories.map(category => {
+              const isSelected = t(category.nameKey) === selectedCategoryName;
+              return (
+                <TouchableOpacity
+                  key={category.id}
+                  style={[styles.categoryItem, isSelected && styles.categoryItemSelected]}
+                  onPress={() => handleCategorySelect(category)}>
+                  <Text style={styles.categoryIconText}>{category.icon}</Text>
+                  <Text style={styles.categoryName}>{t(category.nameKey)}</Text>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+        </BottomSheetView>
+      </BottomSheetWrapper>
+    );
+  },
+);
 
 CategorySheet.displayName = 'CategorySheet';
 
@@ -233,10 +255,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
+    paddingVertical: 12,
     borderRadius: 12,
     marginBottom: 8,
     backgroundColor: '#F9FAFB',
     gap: 12,
+    borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  categoryItemSelected: {
+    borderColor: '#615FFF',
+    backgroundColor: '#EEF2FF',
   },
   categoryIconText: {
     fontSize: 24,
