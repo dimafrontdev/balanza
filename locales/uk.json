@@ -4,9 +4,10 @@
   "common": {
     "selectAll": "Вибрати все",
     "deselectAll": "Зняти все",
-    "today": "Сьогодні",
-    "yesterday": "Вчора",
-    "save": "Зберегти"
+    "today": "сьогодні",
+    "yesterday": "вчора",
+    "save": "Зберегти",
+    "cancel": "Скасувати"
   },
   "auth": {
     "login": {
@@ -109,6 +110,7 @@
     "inviteFriendTitle": "Запросити друга",
     "inviteFriendSubtitle": "Запросіть когось, щоб ділитися витратами",
     "createGroupTitle": "Створити групу",
+    "editGroupTitle": "Редагувати групу",
     "createGroupSubtitle": "Створіть групу для спільних витрат",
     "friendName": "Ім'я друга",
     "friendNamePlaceholder": "Введіть ім'я...",
@@ -120,6 +122,7 @@
     "tapToChangeIcon": "Натисніть, щоб змінити іконку",
     "inviteFriendButton": "Запросити друга",
     "createGroupButton": "Створити групу",
+    "editGroupButton": "Зберегти зміни",
     "pendingNote": "\uD83D\uDCA1 Ваш друг буде неактивним, поки він не зареєструється та не приєднається до balanza. Ви все одно можете додавати спільні витрати.",
     "addFriendsNote": "\uD83D\uDCA1 Після створення групи ви зможете додати учасників зі свого списку друзів.",
     "sections": {
@@ -147,12 +150,37 @@
       "contactInvalid": "Будь ласка, введіть дійсну електронну адресу або номер телефону",
       "groupNameRequired": "Назва групи обов'язкова",
       "groupNameMinLength": "Назва групи має містити щонайменше 2 символи"
+    },
+    "details": {
+      "transactions": "Транзакції",
+      "noTransactions": "Транзакцій ще немає",
+      "youOwe": "Ви винні {{name}}",
+      "owesYou": "Вам винні",
+      "youLent": "Вам позичили",
+      "youBorrowed": "Ви позичили",
+      "total": "Всього",
+      "members": "Учасники",
+      "inviteMember": "Запросити",
+      "you": "Ви",
+      "admin": "Адмін",
+      "edit": "Редагувати",
+      "addMembers": "Додати учасників",
+      "add": "Додати",
+      "noFriendsAvailable": "Немає доступних друзів для додавання",
+      "confirmRemoveMember": "Ви впевнені, що хочете видалити {{name}} з цієї групи?",
+      "confirmTitle": "Підтвердження",
+      "confirmDeleteGroup": "Ви впевнені, що хочете видалити {{name}}? Цю дію не можна скасувати.",
+      "confirmRemoveFriend": "Ви впевнені, що хочете видалити {{name}} зі списку друзів?",
+      "delete": "Видалити",
+      "remove": "Видалити"
     }
   },
   "accounts": {
     "addAccount": "Додати рахунок",
     "allAccounts": "ВСІ РАХУНКИ",
     "totalBalance": "Загальний баланс",
+    "noTransactions": "Поки що немає транзакцій",
+    "confirmDelete": "Ви впевнені, що хочете видалити {{name}}? Цю дію не можна скасувати.",
     "selectType": "Оберіть тип рахунку",
     "selectAccountType": "Оберіть тип рахунку",
     "accountDetails": "Деталі рахунку",
@@ -170,6 +198,9 @@
     },
     "types": {
       "cash": "Готівка",
+      "bank": "Банківський рахунок",
+      "credit_card": "Кредитна картка",
+      "investment": "Інвестиція",
       "card": "Картка",
       "crypto": "Криптовалюта",
       "realEstate": "Нерухомість",

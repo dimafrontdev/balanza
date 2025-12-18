@@ -7,12 +7,19 @@ export interface Friend {
   status: 'active' | 'pending';
 }
 
+export interface GroupMember {
+  id: string;
+  name: string;
+  balance: number;
+}
+
 export interface Group {
   id: string;
   name: string;
   icon: string;
   balance: number;
   membersCount: number;
+  members?: GroupMember[];
 }
 
 export const MOCK_FRIENDS: Friend[] = [
@@ -74,6 +81,12 @@ export const MOCK_GROUPS: Group[] = [
     icon: '✈️',
     balance: 340.25,
     membersCount: 5,
+    members: [
+      { id: '1', name: 'Sarah Johnson', balance: 150.0 },
+      { id: '2', name: 'Mike Chen', balance: 120.25 },
+      { id: '3', name: 'Emma Wilson', balance: 70.0 },
+      { id: '4', name: 'Alex Rodriguez', balance: 0 },
+    ],
   },
   {
     id: '2',
@@ -81,6 +94,10 @@ export const MOCK_GROUPS: Group[] = [
     icon: '🍔',
     balance: -67.8,
     membersCount: 8,
+    members: [
+      { id: '5', name: 'John Smith', balance: -25.5 },
+      { id: '6', name: 'Lisa Brown', balance: -42.3 },
+    ],
   },
   {
     id: '3',
@@ -88,6 +105,7 @@ export const MOCK_GROUPS: Group[] = [
     icon: '🏠',
     balance: 0,
     membersCount: 3,
+    members: [],
   },
   {
     id: '4',
@@ -95,6 +113,7 @@ export const MOCK_GROUPS: Group[] = [
     icon: '🎬',
     balance: 15.5,
     membersCount: 4,
+    members: [{ id: '7', name: 'David Lee', balance: 15.5 }],
   },
   {
     id: '5',
@@ -102,6 +121,7 @@ export const MOCK_GROUPS: Group[] = [
     icon: '⛷️',
     balance: 0,
     membersCount: 6,
+    members: [],
   },
   {
     id: '6',
@@ -109,5 +129,6 @@ export const MOCK_GROUPS: Group[] = [
     icon: '🍖',
     balance: 0,
     membersCount: 10,
+    members: [],
   },
 ];

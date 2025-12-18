@@ -21,3 +21,7 @@ export * from './IconArrowBack';
 export * from './IconPositiveChange';
 export * from './IconNegativeChange';
 export * from './IconAddPerson';
+export * from './IconEdit';
+export * from './IconUserMinus';
+export * from './IconDotsVertical';
+export * from './IconUsers';

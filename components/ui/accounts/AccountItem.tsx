@@ -7,14 +7,15 @@ import { Currency } from '@/store/settingsStore';
 interface AccountItemProps {
   account: Account;
   formatAmount: (amount: number, currency?: Currency) => string;
+  onPress?: () => void;
 }
 
-export default function AccountItem({ account, formatAmount }: AccountItemProps) {
+export default function AccountItem({ account, formatAmount, onPress }: AccountItemProps) {
   const total = formatAmount(account.balance, account.currency);
   const isNegative = total.startsWith('-');
 
   return (
-    <TouchableOpacity style={styles.container} activeOpacity={0.7}>
+    <TouchableOpacity style={styles.container} activeOpacity={0.7} onPress={onPress}>
       <View style={[styles.iconContainer]}>
         <Text style={styles.icon}>{account.icon}</Text>
       </View>

@@ -12,9 +12,10 @@ interface CreateGroupFormProps {
   control: Control<CreateGroupFormData>;
   errors: FieldErrors<CreateGroupFormData>;
   onSubmit: () => void;
+  isEditMode?: boolean;
 }
 
-export const CreateGroupForm = ({ control, errors, onSubmit }: CreateGroupFormProps) => {
+export const CreateGroupForm = ({ control, errors, onSubmit, isEditMode }: CreateGroupFormProps) => {
   const { t } = useTranslation();
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
 
@@ -87,7 +88,11 @@ export const CreateGroupForm = ({ control, errors, onSubmit }: CreateGroupFormPr
       </BottomSheetScrollView>
 
       <View style={styles.buttonContainer}>
-        <StyledButton title={t('groups.createGroupButton')} onPress={onSubmit} size="medium" />
+        <StyledButton 
+          title={isEditMode ? t('groups.editGroupButton') : t('groups.createGroupButton')} 
+          onPress={onSubmit} 
+          size="medium" 
+        />
       </View>
     </>
   );

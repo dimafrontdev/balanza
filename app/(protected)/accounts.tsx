@@ -1,10 +1,11 @@
-import { useRef, useMemo, useCallback } from 'react';
+import { useRef, useMemo, useCallback, useState } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { Icon, useTheme } from 'react-native-paper';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from 'react-i18next';
 import FloatingActionButton from '@/components/ui/common/FloatingActionButton';
 import AddAccountSheet from '@/components/sheets/AddAccountSheet';
+import AccountDetailsSheet from '@/components/sheets/AccountDetailsSheet';
 import SectionHeader from '@/components/ui/common/SectionHeader';
 import Accordion from '@/components/ui/common/Accordion';
 import AccountGroupHeader from '@/components/ui/accounts/AccountGroupHeader';
@@ -36,7 +37,11 @@ export default function AccountsScreen() {
   const { t } = useTranslation();
   const theme = useTheme();
   const { currency } = useSettingsStore();
+  const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
+  const [editAccount, setEditAccount] = useState<Account | null>(null);
+  
   const addAccountSheetRef = useRef<BottomSheetModal>(null);
+  const accountDetailsSheetRef = useRef<BottomSheetModal>(null);
 
   const formatAmountCallback = useCallback(
     (amount: number) => formatAmount(amount, currency),
@@ -80,7 +85,24 @@ export default function AccountsScreen() {
   }, [currency]);
 
   const handleAddAccount = () => {
+    setEditAccount(null);
     addAccountSheetRef.current?.present();
+  };
+
+  const handleAccountPress = (account: Account) => {
+    setSelectedAccount(account);
+    accountDetailsSheetRef.current?.present();
+  };
+
+  const handleEditAccount = (account: Account) => {
+    setEditAccount(account);
+    addAccountSheetRef.current?.present();
+  };
+
+  const handleDeleteAccount = (account: Account) => {
+    console.log('Delete account:', account.id);
+    accountDetailsSheetRef.current?.dismiss();
+    // TODO: Implement actual account deletion
   };
 
   return (
@@ -107,7 +129,12 @@ export default function AccountsScreen() {
             }
             defaultExpanded={config.defaultExpanded}>
             {accounts.map(account => (
-              <AccountItem key={account.id} account={account} formatAmount={formatAmountCallback} />
+              <AccountItem 
+                key={account.id} 
+                account={account} 
+                formatAmount={formatAmountCallback}
+                onPress={() => handleAccountPress(account)}
+              />
             ))}
           </Accordion>
         ))}
@@ -119,7 +146,13 @@ export default function AccountsScreen() {
         onPress={handleAddAccount}
         icon={<Icon source="credit-card-plus" color="white" size={24} />}
       />
-      <AddAccountSheet ref={addAccountSheetRef} />
+      <AddAccountSheet ref={addAccountSheetRef} editAccount={editAccount} />
+      <AccountDetailsSheet
+        ref={accountDetailsSheetRef}
+        account={selectedAccount}
+        onEdit={handleEditAccount}
+        onDelete={handleDeleteAccount}
+      />
     </View>
   );
 }

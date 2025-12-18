@@ -4,9 +4,10 @@
   "common": {
     "selectAll": "Select All",
     "deselectAll": "Deselect All",
-    "today": "Today",
-    "yesterday": "Yesterday",
-    "save": "Save"
+    "today": "today",
+    "yesterday": "yesterday",
+    "save": "Save",
+    "cancel": "Cancel"
   },
   "auth": {
     "login": {
@@ -102,6 +103,7 @@
     "inviteFriendTitle": "Invite Friend",
     "inviteFriendSubtitle": "Invite someone to split expenses",
     "createGroupTitle": "Create Group",
+    "editGroupTitle": "Edit Group",
     "createGroupSubtitle": "Create a group for shared expenses",
     "friendName": "Friend's Name",
     "friendNamePlaceholder": "Enter name...",
@@ -113,6 +115,7 @@
     "tapToChangeIcon": "Tap to change icon",
     "inviteFriendButton": "Invite Friend",
     "createGroupButton": "Create Group",
+    "editGroupButton": "Save Changes",
     "pendingNote": "💡 Your friend will be added as \"Pending\" until they register and join the app. You can still add expenses with them.",
     "addFriendsNote": "After creating the group, you'll be able to add friends from your friends list.",
     "sections": {
@@ -138,12 +141,37 @@
       "contactInvalid": "Please enter a valid email or phone number",
       "groupNameRequired": "Group name is required",
       "groupNameMinLength": "Group name must be at least 2 characters"
+    },
+    "details": {
+      "transactions": "Transactions",
+      "noTransactions": "No transactions yet",
+      "youOwe": "You owe {{name}}",
+      "owesYou": "{{name}} owes you",
+      "youLent": "You lent",
+      "youBorrowed": "You borrowed",
+      "total": "Total",
+      "members": "Members",
+      "inviteMember": "Invite",
+      "you": "You",
+      "admin": "Admin",
+      "edit": "Edit",
+      "addMembers": "Add Members",
+      "add": "Add",
+      "noFriendsAvailable": "No friends available to add",
+      "confirmRemoveMember": "Are you sure you want to remove {{name}} from this group?",
+      "confirmTitle": "Confirm",
+      "confirmDeleteGroup": "Are you sure you want to delete {{name}}? This action cannot be undone.",
+      "confirmRemoveFriend": "Are you sure you want to remove {{name}} from your friends?",
+      "delete": "Delete",
+      "remove": "Remove"
     }
   },
   "accounts": {
     "addAccount": "Add Account",
     "allAccounts": "ALL ACCOUNTS",
     "totalBalance": "Total Balance",
+    "noTransactions": "No transactions yet",
+    "confirmDelete": "Are you sure you want to delete {{name}}? This action cannot be undone.",
     "selectType": "Select Account Type",
     "selectAccountType": "Select account type",
     "accountDetails": "Account Details",
@@ -159,6 +187,9 @@
     },
     "types": {
       "cash": "Cash",
+      "bank": "Bank Account",
+      "credit_card": "Credit Card",
+      "investment": "Investment",
       "card": "Card",
       "crypto": "Crypto",
       "realEstate": "Real Estate",

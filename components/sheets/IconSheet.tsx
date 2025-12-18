@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   },
   bottomSheetTitle: {
     fontSize: 20,
-    fontWeight: '600',
+
     color: '#111827',
     textAlign: 'center',
     marginBottom: 24,
@@ -97,6 +97,5 @@ const styles = StyleSheet.create({
   selectButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: '600',
   },
 });

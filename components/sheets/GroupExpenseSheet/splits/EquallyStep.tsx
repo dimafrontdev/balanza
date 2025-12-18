@@ -104,7 +104,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#615FFF',
     fontFamily: 'Bitter-Regular',
-    fontWeight: '600',
   },
   footer: {
     paddingVertical: 20,
