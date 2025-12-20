@@ -18,8 +18,6 @@ import useSettingsStore from '@/store/settingsStore';
 import { formatAmount, convertCurrency } from '@/utils/currency';
 import { DEFAULT_HOME_WIDGETS } from '@/constants/homeWidgets';
 import {
-  MOCK_ACCOUNTS,
-  MOCK_BALANCE_HISTORY,
   MOCK_TRANSACTIONS,
   MOCK_FINANCIAL_GOALS,
   MOCK_GROUPS,
@@ -27,12 +25,15 @@ import {
   Friend,
   Group,
 } from '@/mocks';
+import useAccountsStore from '@/store/accountsStore';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function BalanceScreen() {
   const theme = useTheme();
   const { t } = useTranslation();
   const { currency, homeWidgets, setHomeWidgets, selectedAccountIds, setSelectedAccountIds } =
     useSettingsStore();
+  const { accounts, fetchAccounts } = useAccountsStore();
   const selectAccountsSheetRef = useRef<BottomSheetModal>(null);
   const transactionsSheetRef = useRef<BottomSheetModal>(null);
   const addTransactionSheetRef = useRef<BottomSheetModal>(null);
@@ -44,11 +45,17 @@ export default function BalanceScreen() {
     }
   }, [homeWidgets.length, setHomeWidgets, t]);
 
+  useFocusEffect(
+    useCallback(() => {
+      fetchAccounts();
+    }, []),
+  );
+
   useEffect(() => {
-    if (selectedAccountIds.length === 0) {
-      setSelectedAccountIds(MOCK_ACCOUNTS.map(acc => acc.id));
+    if (selectedAccountIds.length === 0 && accounts.length > 0) {
+      setSelectedAccountIds(accounts.map(acc => acc.id));
     }
-  }, [selectedAccountIds.length, setSelectedAccountIds]);
+  }, [selectedAccountIds.length, setSelectedAccountIds, accounts]);
 
   const formatAmountCallback = useCallback(
     (amount: number) => formatAmount(amount, currency),
@@ -56,12 +63,12 @@ export default function BalanceScreen() {
   );
 
   const totalBalance = useMemo(() => {
-    const accountsToInclude = MOCK_ACCOUNTS.filter(acc => selectedAccountIds.includes(acc.id));
+    const accountsToInclude = accounts.filter(acc => selectedAccountIds.includes(acc.id));
     return accountsToInclude.reduce((sum, account) => {
       const converted = convertCurrency(account.balance, account.currency.code, currency.code);
       return sum + converted;
     }, 0);
-  }, [currency.code, selectedAccountIds]);
+  }, [currency.code, selectedAccountIds, accounts]);
 
   const monthlyBudget = 1000;
   const monthlySpent = 1500;
@@ -132,7 +139,6 @@ export default function BalanceScreen() {
                 totalBalance={totalBalance}
                 changeAmount={1250}
                 formatAmount={formatAmountCallback}
-                chartData={MOCK_BALANCE_HISTORY}
                 onPress={handleOpenSelectAccounts}
               />
             </View>
@@ -211,7 +217,7 @@ export default function BalanceScreen() {
       </ScrollView>
       <SelectAccountsSheet
         ref={selectAccountsSheetRef}
-        accounts={MOCK_ACCOUNTS}
+        accounts={accounts}
         selectedAccountIds={selectedAccountIds}
         onSave={handleSaveSelectedAccounts}
       />

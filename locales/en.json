@@ -7,7 +7,8 @@
     "today": "today",
     "yesterday": "yesterday",
     "save": "Save",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "checkConnection": "Please check your internet connection and make sure the backend server is running."
   },
   "auth": {
     "login": {
@@ -170,6 +171,7 @@
     "addAccount": "Add Account",
     "allAccounts": "ALL ACCOUNTS",
     "totalBalance": "Total Balance",
+    "noAccounts": "No accounts yet",
     "noTransactions": "No transactions yet",
     "confirmDelete": "Are you sure you want to delete {{name}}? This action cannot be undone.",
     "selectType": "Select Account Type",
@@ -181,9 +183,15 @@
     "accountsCount_other": "{{ count }} accounts",
     "groups": {
       "cash": "Cash",
+      "card": "Cards",
       "bank": "Bank Accounts",
       "credit_card": "Credit Cards",
-      "investment": "Investments"
+      "credit": "Credits",
+      "investment": "Investments",
+      "realEstate": "Real Estate",
+      "cars": "Cars",
+      "goal": "Goals",
+      "other": "Other"
     },
     "types": {
       "cash": "Cash",

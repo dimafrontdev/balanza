@@ -7,9 +7,11 @@ import BottomSheetWrapper from '@/components/ui/common/BottomSheetWrapper';
 import TransactionGroup from '@/components/ui/common/TransactionGroup';
 import TransactionItem from '@/components/ui/balance/TransactionItem';
 import { useBottomSheet } from '@/hooks/useBottomSheet';
-import { Account, MOCK_TRANSACTIONS } from '@/mocks';
+import { Account } from '@/types/account';
+import { MOCK_TRANSACTIONS } from '@/mocks';
 import { IconTrash, IconEdit, IconDotsVertical } from '@/assets/icons';
 import useSettingsStore from '@/store/settingsStore';
+import useAccountsStore from '@/store/accountsStore';
 import { formatAmount } from '@/utils/currency';
 import { groupTransactionsByDate, formatTransactionDate } from '@/utils/dateHelpers';
 
@@ -24,29 +26,35 @@ const AccountDetailsSheet = forwardRef<BottomSheetModal, AccountDetailsSheetProp
     const { t } = useTranslation();
     const { renderBackdrop } = useBottomSheet(['90%']);
     const { currency } = useSettingsStore();
+    const { accounts } = useAccountsStore();
     const [menuVisible, setMenuVisible] = useState(false);
     const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
     const menuButtonRef = useRef<View>(null);
 
+    const currentAccount = useMemo(() => {
+      if (!account) return null;
+      return accounts.find(acc => acc.id === account.id) || account;
+    }, [account, accounts]);
+
     const formatAmountCallback = (amount: number) =>
-      formatAmount(amount, currency, { decimals: 2 });
+      formatAmount(amount, currentAccount?.currency || currency, { decimals: 2 });
 
     const accountTransactions = useMemo(() => {
-      if (!account) return [];
-      return MOCK_TRANSACTIONS.filter(t => t.accountId === account.id);
-    }, [account]);
+      if (!currentAccount) return [];
+      return MOCK_TRANSACTIONS.filter(t => t.accountId === currentAccount.id);
+    }, [currentAccount]);
 
     const handleDelete = () => {
-      if (!account) return;
+      if (!currentAccount) return;
       Alert.alert(
         t('groups.details.confirmTitle'),
-        t('accounts.confirmDelete', { name: account.name }),
+        t('accounts.confirmDelete', { name: currentAccount.name }),
         [
           { text: t('common.cancel'), style: 'cancel' },
           {
             text: t('groups.details.delete'),
             style: 'destructive',
-            onPress: () => onDelete?.(account),
+            onPress: () => onDelete?.(currentAccount),
           },
         ],
       );
@@ -54,8 +62,8 @@ const AccountDetailsSheet = forwardRef<BottomSheetModal, AccountDetailsSheetProp
 
     const handleEdit = () => {
       setMenuVisible(false);
-      if (!account) return;
-      onEdit?.(account);
+      if (!currentAccount) return;
+      onEdit?.(currentAccount);
     };
 
     const handleMenuDelete = () => {
@@ -73,7 +81,7 @@ const AccountDetailsSheet = forwardRef<BottomSheetModal, AccountDetailsSheetProp
       });
     };
 
-    if (!account) return null;
+    if (!currentAccount) return null;
 
     return (
       <BottomSheetWrapper sheetRef={ref} snapPoints={['90%']} renderBackdrop={renderBackdrop}>
@@ -81,11 +89,11 @@ const AccountDetailsSheet = forwardRef<BottomSheetModal, AccountDetailsSheetProp
           <View style={styles.header}>
             <View style={styles.headerInfo}>
               <View style={styles.iconContainer}>
-                <Text style={styles.icon}>{account.icon}</Text>
+                <Text style={styles.icon}>{currentAccount.icon}</Text>
               </View>
               <View style={styles.headerText}>
-                <Text style={styles.name}>{account.name}</Text>
-                <Text style={styles.type}>{t(`accounts.types.${account.type}`)}</Text>
+                <Text style={styles.name}>{currentAccount.name}</Text>
+                <Text style={styles.type}>{t(`accounts.types.${currentAccount.type}`)}</Text>
               </View>
             </View>
             <View style={styles.actions}>
@@ -131,7 +139,7 @@ const AccountDetailsSheet = forwardRef<BottomSheetModal, AccountDetailsSheetProp
 
           <View style={styles.balanceCard}>
             <Text style={styles.balanceLabel}>{t('accounts.totalBalance')}</Text>
-            <Text style={styles.balanceAmount}>{formatAmountCallback(account.balance)}</Text>
+            <Text style={styles.balanceAmount}>{formatAmountCallback(currentAccount.balance)}</Text>
           </View>
 
           <ScrollView style={styles.transactionsList} showsVerticalScrollIndicator={false}>

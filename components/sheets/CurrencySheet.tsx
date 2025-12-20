@@ -10,7 +10,7 @@ import useSettingsStore, { Currency } from '@/store/settingsStore';
 import { currencies } from '@/components/sheets/AddAccountSheet/constants';
 
 interface CurrencySheetProps {
-  onSelectCurrency?: (currency: { code: string; symbol: string }) => void;
+  onSelectCurrency?: (currency: Currency) => void;
   showSaveButton?: boolean;
   value?: Currency | null;
 }
@@ -25,7 +25,7 @@ const CurrencySheet = forwardRef<BottomSheetModal, CurrencySheetProps>(
     const handleSelect = (curr: Currency) => {
       setSelectedCurrency(curr);
       if (!showSaveButton && onSelectCurrency) {
-        onSelectCurrency({ code: curr.code, symbol: curr.symbol });
+        onSelectCurrency(curr);
         (ref as any)?.current?.dismiss();
       }
     };

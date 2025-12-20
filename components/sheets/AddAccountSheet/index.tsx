@@ -8,11 +8,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import BottomSheetWrapper from '@/components/ui/common/BottomSheetWrapper';
 import { useBottomSheet } from '@/hooks/useBottomSheet';
 import useSettingsStore from '@/store/settingsStore';
+import useAccountsStore from '@/store/accountsStore';
 import { AccountFormData, accountSchema } from '@/schemas/account';
 import { AccountTypeStep } from './AccountTypeStep';
 import { AccountDetailsStep } from './AccountDetailsStep';
 import { IconArrowBack } from '@/assets/icons';
-import { Account } from '@/mocks';
+import { Account } from '@/types/account';
 
 interface AddAccountSheetProps {
   editAccount?: Account | null;
@@ -23,6 +24,7 @@ const AddAccountSheet = forwardRef<BottomSheetModal, AddAccountSheetProps>(
     const { t } = useTranslation();
     const { renderBackdrop } = useBottomSheet(['90%']);
     const { currency } = useSettingsStore();
+    const { createAccount, updateAccount } = useAccountsStore();
     const [step, setStep] = useState(1);
 
     const {
@@ -52,7 +54,7 @@ const AddAccountSheet = forwardRef<BottomSheetModal, AddAccountSheetProps>(
           currentBalance: editAccount.balance.toString(),
           icon: editAccount.icon,
           currency: editAccount.currency,
-          includeInTotal: true,
+          includeInTotal: editAccount.includeInTotal ?? true,
         });
       }
     }, [editAccount, reset]);
@@ -67,9 +69,35 @@ const AddAccountSheet = forwardRef<BottomSheetModal, AddAccountSheetProps>(
       setStep(1);
     };
 
-    const onSubmit = (data: AccountFormData) => {
-      console.log(editAccount ? 'Edit account:' : 'Create account:', data);
-      (ref as any)?.current?.dismiss();
+    const onSubmit = async (data: AccountFormData) => {
+      try {
+        const balance = parseFloat(data.currentBalance);
+        
+        // Validate balance is a valid number
+        if (isNaN(balance)) {
+          console.error('Invalid balance value:', data.currentBalance);
+          return;
+        }
+        
+        const accountData = {
+          name: data.accountName,
+          balance,
+          type: data.type,
+          icon: data.icon,
+          currencyCode: data.currency.code,
+          includeInTotal: data.includeInTotal,
+        };
+
+        if (editAccount) {
+          await updateAccount(editAccount.id, accountData);
+        } else {
+          await createAccount(accountData);
+        }
+
+        (ref as any)?.current?.dismiss();
+      } catch (error) {
+        console.error('Failed to save account:', error);
+      }
     };
 
     const handleSheetDismiss = () => {

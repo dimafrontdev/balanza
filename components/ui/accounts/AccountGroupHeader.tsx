@@ -5,19 +5,16 @@ import { useTranslation } from 'react-i18next';
 
 interface AccountGroupHeaderProps {
   title: string;
-  total: string;
   icon: string;
   accountsCount: number;
 }
 
 export default function AccountGroupHeader({
   title,
-  total,
   accountsCount,
   icon,
 }: AccountGroupHeaderProps) {
   const { t } = useTranslation();
-  const isNegative = total.startsWith('-');
 
   return (
     <View style={styles.container}>
@@ -30,7 +27,6 @@ export default function AccountGroupHeader({
           {t('accounts.accountsCount', { count: accountsCount ?? 0 })}
         </Text>
       </View>
-      <Text style={[styles.total, isNegative && styles.totalNegative]}>{total}</Text>
     </View>
   );
 }

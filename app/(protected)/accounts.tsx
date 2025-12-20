@@ -1,6 +1,6 @@
-import { useRef, useMemo, useCallback, useState } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import { Icon, useTheme } from 'react-native-paper';
+import { useRef, useMemo, useCallback, useState, useEffect } from 'react';
+import { View, ScrollView, StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
+import { Icon, useTheme, Text } from 'react-native-paper';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from 'react-i18next';
 import FloatingActionButton from '@/components/ui/common/FloatingActionButton';
@@ -12,77 +12,58 @@ import AccountGroupHeader from '@/components/ui/accounts/AccountGroupHeader';
 import AccountItem from '@/components/ui/accounts/AccountItem';
 import TotalBalanceWidget from '@/components/ui/accounts/TotalBalanceWidget';
 import useSettingsStore from '@/store/settingsStore';
-import { formatAmount, convertCurrency } from '@/utils/currency';
-import { MOCK_ACCOUNTS, type Account, type AccountType } from '@/mocks/accounts';
-import { MOCK_BALANCE_HISTORY } from '@/mocks/chartData';
-
-interface AccountTypeConfig {
-  translationKey: string;
-  icon: string;
-  defaultExpanded: boolean;
-}
-
-const ACCOUNT_TYPE_CONFIG: Record<AccountType, AccountTypeConfig> = {
-  cash: { translationKey: 'accounts.groups.cash', icon: '💵', defaultExpanded: true },
-  bank: { translationKey: 'accounts.groups.bank', icon: '💳', defaultExpanded: true },
-  credit_card: {
-    translationKey: 'accounts.groups.credit_card',
-    icon: '💳',
-    defaultExpanded: false,
-  },
-  investment: { translationKey: 'accounts.groups.investment', icon: '💎', defaultExpanded: false },
-};
+import useAccountsStore from '@/store/accountsStore';
+import { formatAmount, Currency } from '@/utils/currency';
+import { type Account } from '@/types/account';
+import { groupAccountsByType } from '@/utils/accounts';
 
 export default function AccountsScreen() {
   const { t } = useTranslation();
   const theme = useTheme();
   const { currency } = useSettingsStore();
+  const {
+    accounts,
+    totalBalance,
+    balanceHistory,
+    changeAmount,
+    loading,
+    error,
+    fetchAccounts,
+    fetchTotalBalance,
+    deleteAccount: deleteAccountFromStore,
+  } = useAccountsStore();
+
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
   const [editAccount, setEditAccount] = useState<Account | null>(null);
-  
+  const [refreshing, setRefreshing] = useState(false);
+
   const addAccountSheetRef = useRef<BottomSheetModal>(null);
   const accountDetailsSheetRef = useRef<BottomSheetModal>(null);
 
   const formatAmountCallback = useCallback(
-    (amount: number) => formatAmount(amount, currency),
+    (amount: number, accountCurrency?: Currency) =>
+      formatAmount(amount, accountCurrency || currency),
     [currency],
   );
 
-  const totalBalance = useMemo(() => {
-    return MOCK_ACCOUNTS.reduce((sum, account) => {
-      const converted = convertCurrency(account.balance, account.currency.code, currency.code);
-      return sum + converted;
-    }, 0);
-  }, [currency.code]);
+  useEffect(() => {
+    const loadData = async () => {
+      await fetchAccounts();
+      await fetchTotalBalance();
+    };
+    loadData();
+  }, []);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchAccounts();
+    await fetchTotalBalance();
+    setRefreshing(false);
+  };
 
   const groupedAccounts = useMemo(() => {
-    const groups = MOCK_ACCOUNTS.reduce(
-      (acc, account) => {
-        if (!acc[account.type]) {
-          acc[account.type] = [];
-        }
-        acc[account.type].push(account);
-        return acc;
-      },
-      {} as Record<AccountType, Account[]>,
-    );
-
-    return Object.entries(groups).map(([type, accounts]) => {
-      const total = accounts.reduce((sum, acc) => {
-        const converted = convertCurrency(acc.balance, acc.currency.code, currency.code);
-        return sum + converted;
-      }, 0);
-      const config = ACCOUNT_TYPE_CONFIG[type as AccountType];
-
-      return {
-        type: type as AccountType,
-        accounts,
-        total,
-        totalFormatted: formatAmount(total, currency),
-        config,
-      };
-    });
-  }, [currency]);
+    return groupAccountsByType(accounts, currency);
+  }, [accounts, currency]);
 
   const handleAddAccount = () => {
     setEditAccount(null);
@@ -99,45 +80,80 @@ export default function AccountsScreen() {
     addAccountSheetRef.current?.present();
   };
 
-  const handleDeleteAccount = (account: Account) => {
-    console.log('Delete account:', account.id);
+  const handleDeleteAccount = async (account: Account) => {
+    await deleteAccountFromStore(account.id);
     accountDetailsSheetRef.current?.dismiss();
-    // TODO: Implement actual account deletion
   };
+
+  if (loading && accounts.length === 0) {
+    return (
+      <View
+        style={[
+          styles.container,
+          styles.centerContent,
+          { backgroundColor: theme.colors.background },
+        ]}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (error && accounts.length === 0) {
+    return (
+      <View
+        style={[
+          styles.container,
+          styles.centerContent,
+          { backgroundColor: theme.colors.background },
+        ]}>
+        <Text style={styles.errorText}>{error}</Text>
+        <Text style={styles.errorHint}>{t('common.checkConnection')}</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         <TotalBalanceWidget
           totalBalance={totalBalance}
-          changeAmount={1250}
+          changeAmount={changeAmount}
           formatAmount={formatAmountCallback}
-          chartData={MOCK_BALANCE_HISTORY}
+          isLoading={loading}
+          chartData={balanceHistory}
         />
         <SectionHeader title={t('accounts.allAccounts')} />
 
-        {groupedAccounts.map(({ type, accounts, totalFormatted, config }) => (
-          <Accordion
-            key={type}
-            header={
-              <AccountGroupHeader
-                title={t(config.translationKey)}
-                total={totalFormatted}
-                icon={config.icon}
-                accountsCount={accounts.length}
-              />
-            }
-            defaultExpanded={config.defaultExpanded}>
-            {accounts.map(account => (
-              <AccountItem 
-                key={account.id} 
-                account={account} 
-                formatAmount={formatAmountCallback}
-                onPress={() => handleAccountPress(account)}
-              />
-            ))}
-          </Accordion>
-        ))}
+        {groupedAccounts.length === 0 ? (
+          <View style={styles.emptyState}>
+            <Text style={styles.emptyText}>{t('accounts.noAccounts')}</Text>
+          </View>
+        ) : (
+          groupedAccounts.map(({ type, accounts: accountsList, config }) => (
+            <Accordion
+              key={type}
+              header={
+                <AccountGroupHeader
+                  title={t(config.translationKey)}
+                  icon={config.icon}
+                  accountsCount={accountsList.length}
+                />
+              }
+              defaultExpanded={config.defaultExpanded}>
+              {accountsList.map(account => (
+                <AccountItem
+                  key={account.id}
+                  account={account}
+                  formatAmount={formatAmountCallback}
+                  onPress={() => handleAccountPress(account)}
+                />
+              ))}
+            </Accordion>
+          ))
+        )}
 
         <View style={styles.bottomSpacer} />
       </ScrollView>
@@ -161,11 +177,37 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  centerContent: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   scrollView: {
     flex: 1,
     paddingHorizontal: 16,
   },
   bottomSpacer: {
     height: 80,
+  },
+  emptyState: {
+    paddingVertical: 48,
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontSize: 14,
+    color: '#9CA3AF',
+  },
+  errorText: {
+    fontSize: 16,
+    color: '#EF4444',
+    fontWeight: '600',
+    marginBottom: 8,
+    textAlign: 'center',
+    paddingHorizontal: 32,
+  },
+  errorHint: {
+    fontSize: 14,
+    color: '#6B7280',
+    textAlign: 'center',
+    paddingHorizontal: 32,
   },
 });

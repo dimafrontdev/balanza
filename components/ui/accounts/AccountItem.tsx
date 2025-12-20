@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
-import { Account } from '@/mocks/accounts';
+import { Account } from '@/types/account';
 import { Currency } from '@/store/settingsStore';
 
 interface AccountItemProps {

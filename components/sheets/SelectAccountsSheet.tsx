@@ -4,7 +4,7 @@ import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import { useTranslation } from 'react-i18next';
 import BottomSheetWrapper from '@/components/ui/common/BottomSheetWrapper';
 import { useBottomSheet } from '@/hooks/useBottomSheet';
-import { Account } from '@/mocks/accounts';
+import { Account } from '@/types/account';
 import { formatAmount } from '@/utils';
 
 interface SelectAccountsSheetProps {
