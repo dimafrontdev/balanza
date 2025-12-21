@@ -106,8 +106,8 @@ const ScannedItemsSheet = forwardRef<BottomSheetModal, ScannedItemsSheetProps>(
                 {localItems.length === 0 ? (
                   <View style={styles.emptyState}>
                     <Ionicons name="receipt-outline" size={64} color="#D1D5DB" />
-                    <Text style={styles.emptyText}>No items yet</Text>
-                    <Text style={styles.emptySubtext}>Add items manually or scan a receipt</Text>
+                    <Text style={styles.emptyText}>{t('transaction.noItemsYet')}</Text>
+                    <Text style={styles.emptySubtext}>{t('transaction.addItemsManually')}</Text>
                   </View>
                 ) : (
                   localItems.map((item, index) => (

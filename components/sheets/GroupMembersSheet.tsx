@@ -9,7 +9,7 @@ import { GroupMember } from '@/mocks';
 import { IconArrowBack, IconTrash } from '@/assets/icons';
 import StyledButton from '@/components/ui/common/StyledButton';
 import useAuthStore from '@/store/authStore';
-import { groupsApi } from '@/api/groups';
+import * as groupsApi from '@/api/groups';
 
 interface GroupMembersSheetProps {
   groupId: string;
@@ -36,10 +36,10 @@ const GroupMembersSheet = forwardRef<BottomSheetModal, GroupMembersSheetProps>(
     }, [showAddMembers]);
 
     const loadAvailableFriends = async () => {
-      const data = await groupsApi.getGroupsAndFriends();
+      const response = await groupsApi.getGroupsAndFriends();
       const memberIds = members.map(m => m.id);
-      const available = data.friends.filter(
-        f => f.status === 'active' && !memberIds.includes(f.id),
+      const available = response.data.friends.filter(
+        (f: { status: string; id: string }) => f.status === 'active' && !memberIds.includes(f.id),
       );
       setAvailableFriends(available);
     };

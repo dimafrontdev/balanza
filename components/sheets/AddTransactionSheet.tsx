@@ -24,6 +24,7 @@ import useSettingsStore from '@/store/settingsStore';
 import useAccountsStore from '@/store/accountsStore';
 import { IconArrowBack } from '@/assets/icons';
 import { validateAmountInputWithLeadingZeros } from '@/utils/validation';
+import { scanReceipt } from '@/api/receipts';
 
 type TransactionType = 'expense' | 'income' | 'transfer';
 
@@ -170,23 +171,30 @@ const AddTransactionSheet = forwardRef<BottomSheetModal>((props, ref) => {
     setSelectedSplitGroup(undefined);
   };
 
-  const handleImageSelected = () => {
+  const handleImageSelected = async (imageUri: string) => {
     setIsScanning(true);
     scannedItemsSheetRef.current?.present();
 
-    setTimeout(() => {
-      const mockItems: ScannedItem[] = [
-        { name: 'Coffee', amount: '4.50' },
-        { name: 'Sandwich', amount: '8.99' },
-        { name: 'Water', amount: '2.00' },
-      ];
-      setValue('items', mockItems);
+    try {
+      const { data } = await scanReceipt(imageUri);
 
-      const total = mockItems.reduce((sum, item) => sum + parseFloat(item.amount), 0);
-      setValue('amount', total.toFixed(2));
+      if (data?.success && data.data) {
+        const currentItems = watch('items') || [];
+        const newItems: ScannedItem[] = data.data.items.map(item => ({
+          name: item.name,
+          amount: (item.price * item.quantity).toFixed(2),
+        }));
 
+        const combinedItems = [...currentItems, ...newItems];
+        setValue('items', combinedItems);
+
+        const currentAmount = parseFloat(watch('amount') || '0');
+        const newTotal = currentAmount + data.data.total;
+        setValue('amount', newTotal.toFixed(2));
+      }
+    } finally {
       setIsScanning(false);
-    }, 2000);
+    }
   };
 
   const handleScannedItemChange = (index: number, field: keyof ScannedItem, value: string) => {
@@ -206,9 +214,7 @@ const AddTransactionSheet = forwardRef<BottomSheetModal>((props, ref) => {
     scannedItemsSheetRef.current?.present();
   };
 
-  const onSubmit = (data: TransactionFormData) => {
-    console.log('Form data:', data, 'Recurring:', selectedRecurring);
-  };
+  const onSubmit = (data: TransactionFormData) => {};
 
   return (
     <>

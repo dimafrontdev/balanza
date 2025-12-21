@@ -349,6 +349,8 @@
     "itemNamePlaceholder": "Item name",
     "amount": "Amount",
     "addItem": "Add Item",
+    "noItemsYet": "No items yet",
+    "addItemsManually": "Add items manually or scan a receipt",
     "confirm": "Confirm",
     "splitDetails": "Split Details",
     "you": "You",
@@ -377,6 +379,8 @@
     "itemsCount_one": "{{ count }} item",
     "itemsCount_other": "{{ count }} items",
     "total": "Total",
-    "editItems": "Edit Items"
+    "editItems": "Edit Items",
+    "scanFailed": "Scan Failed",
+    "scanFailedMessage": "Failed to scan receipt. Please try again or enter items manually."
   }
 }

@@ -12,7 +12,7 @@ import { BalanceSummary, SectionHeader, ListItem, SettledUpSection } from '@/com
 import { Friend, Group } from '@/mocks';
 import useSettingsStore from '@/store/settingsStore';
 import { formatAmount } from '@/utils/currency';
-import { groupsApi } from '@/api/groups';
+import * as groupsApi from '@/api/groups';
 
 function isGroup(item: Friend | Group): item is Group {
   return 'membersCount' in item;
@@ -45,9 +45,9 @@ export default function GroupsScreen() {
   }, [invitationToken]);
 
   const loadGroupsAndFriends = async () => {
-    const data = await groupsApi.getGroupsAndFriends();
-    setGroups(data.groups);
-    setFriends(data.friends);
+    const response = await groupsApi.getGroupsAndFriends();
+    setGroups(response.data.groups);
+    setFriends(response.data.friends);
   };
 
   const acceptInvitation = async (token: string) => {
@@ -70,8 +70,8 @@ export default function GroupsScreen() {
     if (selectedItem) {
       const allData = await groupsApi.getGroupsAndFriends();
       const updatedItem = isGroup(selectedItem)
-        ? allData.groups.find(g => g.id === selectedItem.id)
-        : allData.friends.find(f => f.id === selectedItem.id);
+        ? allData.data.groups.find((g: Group) => g.id === selectedItem.id)
+        : allData.data.friends.find((f: Friend) => f.id === selectedItem.id);
       if (updatedItem) {
         setSelectedItem(updatedItem);
       }

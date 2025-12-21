@@ -1,4 +1,5 @@
-import axiosInstance from './index';
+import api from './index';
+import { GROUPS_ENDPOINTS } from '@/constants/endpoints';
 
 export interface InviteFriendData {
   name: string;
@@ -40,53 +41,38 @@ export interface Group {
   members: GroupMember[];
 }
 
-export const groupsApi = {
-  inviteFriend: async (data: InviteFriendData) => {
-    const response = await axiosInstance.post('/groups/friends/invite', data);
-    return response.data;
-  },
+export const inviteFriend = async (data: InviteFriendData) => {
+  return api.post(GROUPS_ENDPOINTS.INVITE_FRIEND, data);
+};
 
-  createGroup: async (data: CreateGroupData) => {
-    const response = await axiosInstance.post('/groups', data);
-    return response.data;
-  },
+export const createGroup = async (data: CreateGroupData) => {
+  return api.post(GROUPS_ENDPOINTS.CREATE, data);
+};
 
-  updateGroup: async (groupId: string, data: UpdateGroupData) => {
-    const response = await axiosInstance.put(`/groups/${groupId}`, data);
-    return response.data;
-  },
+export const updateGroup = async (groupId: string, data: UpdateGroupData) => {
+  return api.put(GROUPS_ENDPOINTS.UPDATE(groupId), data);
+};
 
-  getGroupsAndFriends: async (): Promise<{ groups: Group[]; friends: Friend[] }> => {
-    const response = await axiosInstance.get('/groups');
-    return response.data;
-  },
+export const getGroupsAndFriends = async () => {
+  return api.get<{ groups: Group[]; friends: Friend[] }>(GROUPS_ENDPOINTS.GET_ALL);
+};
 
-  acceptInvitation: async (invitationToken: string) => {
-    const response = await axiosInstance.post('/groups/invitations/accept', {
-      invitationToken,
-    });
-    return response.data;
-  },
+export const acceptInvitation = async (invitationToken: string) => {
+  return api.post(GROUPS_ENDPOINTS.ACCEPT_INVITATION, { invitationToken });
+};
 
-  addMembersToGroup: async (groupId: string, memberIds: string[]) => {
-    const response = await axiosInstance.post(`/groups/${groupId}/members`, {
-      memberIds,
-    });
-    return response.data.group;
-  },
+export const addMembersToGroup = async (groupId: string, memberIds: string[]) => {
+  return api.post(GROUPS_ENDPOINTS.ADD_MEMBERS(groupId), { memberIds });
+};
 
-  removeMemberFromGroup: async (groupId: string, memberId: string) => {
-    const response = await axiosInstance.delete(`/groups/${groupId}/members/${memberId}`);
-    return response.data.group;
-  },
+export const removeMemberFromGroup = async (groupId: string, memberId: string) => {
+  return api.delete(GROUPS_ENDPOINTS.REMOVE_MEMBER(groupId, memberId));
+};
 
-  deleteGroup: async (groupId: string) => {
-    const response = await axiosInstance.delete(`/groups/${groupId}`);
-    return response.data;
-  },
+export const deleteGroup = async (groupId: string) => {
+  return api.delete(GROUPS_ENDPOINTS.DELETE(groupId));
+};
 
-  removeFriend: async (friendshipId: string) => {
-    const response = await axiosInstance.delete(`/groups/friends/${friendshipId}`);
-    return response.data;
-  },
+export const removeFriend = async (friendshipId: string) => {
+  return api.delete(GROUPS_ENDPOINTS.REMOVE_FRIEND(friendshipId));
 };

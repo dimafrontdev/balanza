@@ -360,6 +360,8 @@
     "itemNamePlaceholder": "Назва товару",
     "amount": "Сума",
     "addItem": "Додати товар",
+    "noItemsYet": "Поки що немає товарів",
+    "addItemsManually": "Додайте товари вручну або відскануйте чек",
     "confirm": "Підтвердити",
     "splitDetails": "Деталі розподілу",
     "you": "Ви",
@@ -390,6 +392,8 @@
     "itemsCount_many": "{{count}} товарів",
     "itemsCount_other": "{{count}} товарів",
     "total": "Всього",
-    "editItems": "Редагувати товари"
+    "editItems": "Редагувати товари",
+    "scanFailed": "Помилка сканування",
+    "scanFailedMessage": "Не вдалося відсканувати чек. Спробуйте ще раз або введіть товари вручну."
   }
 }

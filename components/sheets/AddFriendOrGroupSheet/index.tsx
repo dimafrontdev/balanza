@@ -14,7 +14,7 @@ import {
   InviteFriendFormData,
   CreateGroupFormData,
 } from '@/schemas/group';
-import { groupsApi } from '@/api/groups';
+import * as groupsApi from '@/api/groups';
 import { ChoiceStep } from './ChoiceStep';
 import { InviteFriendForm } from './InviteFriendForm';
 import { CreateGroupForm } from './CreateGroupForm';
