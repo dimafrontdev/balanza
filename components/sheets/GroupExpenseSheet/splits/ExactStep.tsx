@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: '600',
+
     color: '#111827',
     fontFamily: 'Bitter-Regular',
     marginBottom: 12,
@@ -125,7 +125,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#10B981',
     fontFamily: 'Bitter-Regular',
-    fontWeight: '600',
   },
   remainingNegative: {
     color: '#EF4444',
@@ -163,7 +162,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Bitter-Regular',
     color: '#6B7280',
-    fontWeight: '600',
   },
   memberContent: {
     flex: 1,
@@ -208,7 +206,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#10B981',
     fontFamily: 'Bitter-Regular',
-    fontWeight: '600',
+
     textAlign: 'center',
   },
   errorText: {

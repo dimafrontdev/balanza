@@ -2,14 +2,15 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { LineChart } from 'react-native-gifted-charts';
 import { useTranslation } from 'react-i18next';
 import { IconPositiveChange, IconNegativeChange } from '@/assets/icons';
-import { generateLast6MonthsData } from '@/utils/chart';
+import { generateLast6MonthsData, HistoryDataPoint } from '@/utils/chart';
 
 interface TotalBalanceWidgetProps {
   totalBalance: number;
   changeAmount: number;
   formatAmount: (amount: number) => string;
-  chartData?: number[];
+  chartData?: HistoryDataPoint[];
   onPress?: () => void;
+  isLoading?: boolean;
 }
 
 export default function TotalBalanceWidget({
@@ -18,6 +19,7 @@ export default function TotalBalanceWidget({
   formatAmount,
   chartData: chartDataValues,
   onPress,
+  isLoading = false,
 }: TotalBalanceWidgetProps) {
   const { t } = useTranslation();
   const chartData = generateLast6MonthsData(chartDataValues || []);
@@ -46,25 +48,29 @@ export default function TotalBalanceWidget({
       <Text style={styles.balance}>{formatAmount(totalBalance)}</Text>
 
       <View style={styles.chartContainer}>
-        <LineChart
-          isAnimated
-          animateOnDataChange
-          data={chartData}
-          height={64}
-          curved
-          hideDataPoints
-          color="rgba(255, 255, 255, 0.8)"
-          thickness={2}
-          hideRules
-          hideYAxisText
-          xAxisColor="transparent"
-          yAxisColor="transparent"
-          xAxisLabelTextStyle={styles.labelText}
-          spacing={60}
-          initialSpacing={20}
-          endSpacing={20}
-          yAxisOffset={1}
-        />
+        {isLoading || !chartDataValues || chartDataValues.length === 0 ? (
+          <View style={styles.chartPlaceholder} />
+        ) : (
+          <LineChart
+            isAnimated
+            animateOnDataChange
+            data={chartData}
+            height={64}
+            curved
+            hideDataPoints
+            color="rgba(255, 255, 255, 0.8)"
+            thickness={2}
+            hideRules
+            hideYAxisText
+            xAxisColor="transparent"
+            yAxisColor="transparent"
+            xAxisLabelTextStyle={styles.labelText}
+            spacing={60}
+            initialSpacing={20}
+            endSpacing={20}
+            yAxisOffset={1}
+          />
+        )}
       </View>
     </>
   );
@@ -134,6 +140,11 @@ const styles = StyleSheet.create({
   },
   chartContainer: {
     marginLeft: -20,
+  },
+  chartPlaceholder: {
+    height: 96,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   labelText: {
     fontFamily: 'Bitter-Regular',

@@ -55,11 +55,11 @@ export const InviteFriendForm = ({ control, errors, onSubmit }: InviteFriendForm
             name="contact"
             render={({ field: { value, onChange, onBlur } }) => (
               <View style={styles.fieldContainer}>
-                <Text style={styles.fieldLabel}>{t('groups.contactInformation')}</Text>
+                <Text style={styles.fieldLabel}>{t('groups.email')}</Text>
                 <View style={errors.contact ? styles.inputErrorContainer : undefined}>
                   <BottomSheetTextInput
                     style={styles.input}
-                    placeholder={t('groups.contactPlaceholder')}
+                    placeholder={t('groups.emailPlaceholder')}
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}

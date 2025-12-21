@@ -146,7 +146,6 @@ export default function ByItemsStep({
           </View>
         )}
 
-        {/* Show totals per person */}
         {Object.keys(memberTotals).length > 0 && (
           <View style={styles.totalsSection}>
             <Text style={styles.totalsTitle}>{t('transaction.totalOwed')}</Text>

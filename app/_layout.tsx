@@ -38,7 +38,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const { isLoggedIn, checkAuth } = useAuthStore();
-  const { language } = useSettingsStore();
+  const { language, fetchUserProfile } = useSettingsStore();
 
   const segments = useSegments();
   const router = useRouter();
@@ -50,8 +50,14 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
+    const init = async () => {
+      await checkAuth();
+      if (isLoggedIn) {
+        await fetchUserProfile();
+      }
+    };
+    init();
+  }, [checkAuth, isLoggedIn, fetchUserProfile]);
 
   useEffect(() => {
     if (error) throw error;

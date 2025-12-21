@@ -13,6 +13,7 @@ import StyledButton from '@/components/ui/common/StyledButton';
 import CurrencySheet from '../CurrencySheet';
 import { AccountFormData } from '@/schemas/account';
 import { currencies } from './constants';
+import { sanitizeNumericInput } from '@/utils/validation';
 
 interface AccountDetailsStepProps {
   control: Control<AccountFormData>;
@@ -140,9 +141,11 @@ export const AccountDetailsStep = ({ control, errors, onSubmit }: AccountDetails
                           style={[styles.input, styles.balanceInput]}
                           placeholder="0.00"
                           value={value}
-                          onChangeText={onChange}
+                          onChangeText={(text) => {
+                            onChange(sanitizeNumericInput(text));
+                          }}
                           onBlur={onBlur}
-                          keyboardType="numeric"
+                          keyboardType="decimal-pad"
                           placeholderTextColor="#9CA3AF"
                         />
                       </View>

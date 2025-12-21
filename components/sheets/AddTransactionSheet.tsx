@@ -18,9 +18,10 @@ import IncomeForm from '@/components/ui/transaction/IncomeForm';
 import TransferForm from '@/components/ui/transaction/TransferForm';
 import CameraButton from '@/components/ui/transaction/CameraButton';
 import { TransactionFormData, ScannedItem } from '@/components/ui/transaction/types';
-import { MOCK_ACCOUNTS, MOCK_TRANSACTIONS } from '@/mocks';
+import { MOCK_TRANSACTIONS } from '@/mocks';
 import { Group, Friend } from '@/mocks/groups';
 import useSettingsStore from '@/store/settingsStore';
+import useAccountsStore from '@/store/accountsStore';
 import { IconArrowBack } from '@/assets/icons';
 import { validateAmountInputWithLeadingZeros } from '@/utils/validation';
 
@@ -43,6 +44,7 @@ const AddTransactionSheet = forwardRef<BottomSheetModal>((props, ref) => {
   const scannedItemsSheetRef = useRef<BottomSheetModal>(null);
   const groupExpenseSheetRef = useRef<BottomSheetModal>(null);
   const { currency: defaultCurrency } = useSettingsStore();
+  const { accounts } = useAccountsStore();
 
   const getMostRecentCategory = (type: 'expense' | 'income') => {
     const recentTransaction = MOCK_TRANSACTIONS.filter(t => t.type === type).sort(
@@ -58,7 +60,7 @@ const AddTransactionSheet = forwardRef<BottomSheetModal>((props, ref) => {
     defaultValues: {
       amount: '',
       category: getMostRecentCategory('expense'),
-      account: MOCK_ACCOUNTS[0]?.name || '',
+      account: accounts[0]?.name || '',
       toAccount: '',
       note: '',
       date: new Date(),
@@ -73,8 +75,17 @@ const AddTransactionSheet = forwardRef<BottomSheetModal>((props, ref) => {
   const selectedCurrency = watch('currency');
   const items = watch('items');
 
-  const selectedAccount = MOCK_ACCOUNTS.find(acc => acc.name === selectedAccountName);
-  const selectedToAccount = MOCK_ACCOUNTS.find(acc => acc.name === selectedToAccountName);
+  const selectedAccount = accounts.find(acc => acc.name === selectedAccountName);
+  const selectedToAccount = accounts.find(acc => acc.name === selectedToAccountName);
+
+  useEffect(() => {
+    if (accounts.length > 0) {
+      const accountExists = accounts.some(acc => acc.name === selectedAccountName);
+      if (!selectedAccountName || !accountExists) {
+        setValue('account', accounts[0].name);
+      }
+    }
+  }, [accounts, selectedAccountName, setValue]);
 
   useEffect(() => {
     if (activeTab === 'expense' || activeTab === 'income') {
@@ -97,7 +108,7 @@ const AddTransactionSheet = forwardRef<BottomSheetModal>((props, ref) => {
     selectAccountSheetRef.current?.dismiss();
 
     if (activeTab === 'transfer') {
-      const account = MOCK_ACCOUNTS.find(acc => acc.name === accountName);
+      const account = accounts.find(acc => acc.name === accountName);
       if (account) {
         setValue('currency', account.currency);
       }
@@ -212,7 +223,7 @@ const AddTransactionSheet = forwardRef<BottomSheetModal>((props, ref) => {
           reset({
             amount: '',
             category: getMostRecentCategory('expense'),
-            account: MOCK_ACCOUNTS[0]?.name || '',
+            account: accounts[0]?.name || '',
             toAccount: '',
             note: '',
             date: new Date(),
@@ -324,14 +335,14 @@ const AddTransactionSheet = forwardRef<BottomSheetModal>((props, ref) => {
 
       <SelectSingleAccountSheet
         ref={selectAccountSheetRef}
-        accounts={MOCK_ACCOUNTS}
+        accounts={accounts}
         onSelect={handleSelectAccount}
         selectedAccountName={selectedAccountName}
       />
 
       <SelectSingleAccountSheet
         ref={selectToAccountSheetRef}
-        accounts={MOCK_ACCOUNTS}
+        accounts={accounts}
         onSelect={handleSelectToAccount}
         selectedAccountName={selectedToAccountName}
       />
