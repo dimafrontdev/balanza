@@ -15,6 +15,7 @@ export const registerSchema = z.object({
     .string()
     .min(1, 'auth.validation.passwordRequired')
     .min(8, 'auth.validation.passwordMinLength'),
+  invitationToken: z.string().optional(),
 });
 
 export type LoginFormData = z.infer<typeof loginSchema>;

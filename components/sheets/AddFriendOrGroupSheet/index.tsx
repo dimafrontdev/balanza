@@ -14,6 +14,7 @@ import {
   InviteFriendFormData,
   CreateGroupFormData,
 } from '@/schemas/group';
+import { groupsApi } from '@/api/groups';
 import { ChoiceStep } from './ChoiceStep';
 import { InviteFriendForm } from './InviteFriendForm';
 import { CreateGroupForm } from './CreateGroupForm';
@@ -22,10 +23,11 @@ type Choice = 'friend' | 'group' | null;
 
 interface AddFriendOrGroupSheetProps {
   editGroup?: { id: string; name: string; icon: string } | null;
+  onSuccess?: () => void;
 }
 
 const AddFriendOrGroupSheet = forwardRef<BottomSheetModal, AddFriendOrGroupSheetProps>(
-  ({ editGroup }, ref) => {
+  ({ editGroup, onSuccess }, ref) => {
     const { t } = useTranslation();
     const { renderBackdrop } = useBottomSheet(['80%']);
     const [step, setStep] = useState(1);
@@ -57,14 +59,20 @@ const AddFriendOrGroupSheet = forwardRef<BottomSheetModal, AddFriendOrGroupSheet
       setChoice(null);
     };
 
-    const onSubmitFriend = (data: InviteFriendFormData) => {
-      console.log('Friend invited:', data);
+    const onSubmitFriend = async (data: InviteFriendFormData) => {
+      await groupsApi.inviteFriend(data);
       (ref as any)?.current?.dismiss();
+      onSuccess?.();
     };
 
-    const onSubmitGroup = (data: CreateGroupFormData) => {
-      console.log('Group created:', data);
+    const onSubmitGroup = async (data: CreateGroupFormData) => {
+      if (editGroup) {
+        await groupsApi.updateGroup(editGroup.id, data);
+      } else {
+        await groupsApi.createGroup(data);
+      }
       (ref as any)?.current?.dismiss();
+      onSuccess?.();
     };
 
     const handleSheetDismiss = () => {

@@ -24,13 +24,3 @@ export const formatAmount = (
   }
   return `${sign}${currency.symbol}${formatted}`;
 };
-
-export const convertCurrency = (
-  amount: number,
-  fromCurrency: string,
-  toCurrency: string,
-): number => {
-  if (fromCurrency === toCurrency) return amount;
-  // TODO: Implement actual currency conversion with exchange rates
-  return amount;
-};

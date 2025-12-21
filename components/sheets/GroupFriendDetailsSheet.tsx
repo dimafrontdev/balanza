@@ -9,6 +9,7 @@ import { useBottomSheet } from '@/hooks/useBottomSheet';
 import { Friend, Group, MOCK_TRANSACTIONS } from '@/mocks';
 import { IconTrash, IconEdit, IconUserMinus, IconDotsVertical, IconUsers } from '@/assets/icons';
 import useSettingsStore from '@/store/settingsStore';
+import useAuthStore from '@/store/authStore';
 import { formatAmount } from '@/utils/currency';
 import { groupTransactionsByDate, formatTransactionDate } from '@/utils/dateHelpers';
 import { isGroup, isFriend } from '@/utils/typeGuards';
@@ -20,17 +21,24 @@ interface GroupFriendDetailsSheetProps {
   onEdit?: (item: Friend | Group) => void;
   onDelete?: (item: Friend | Group) => void;
   onRemoveFriend?: (friend: Friend) => void;
+  onUpdate?: () => void;
 }
 
 const GroupFriendDetailsSheet = forwardRef<BottomSheetModal, GroupFriendDetailsSheetProps>(
-  ({ item, onEdit, onDelete, onRemoveFriend }, ref) => {
+  ({ item, onEdit, onDelete, onRemoveFriend, onUpdate }, ref) => {
     const { t } = useTranslation();
     const { renderBackdrop } = useBottomSheet(['90%']);
     const { currency } = useSettingsStore();
+    const { user } = useAuthStore();
     const [menuVisible, setMenuVisible] = useState(false);
     const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
     const menuButtonRef = useRef<View>(null);
     const membersSheetRef = useRef<BottomSheetModal>(null);
+
+    const isOwner = useMemo(() => {
+      if (!item || !isGroup(item) || !user) return false;
+      return item.ownerId === user.id;
+    }, [item, user]);
 
     const formatAmountCallback = (amount: number) =>
       formatAmount(amount, currency, { decimals: 2 });
@@ -86,7 +94,7 @@ const GroupFriendDetailsSheet = forwardRef<BottomSheetModal, GroupFriendDetailsS
 
     const handleInviteMember = () => {
       membersSheetRef.current?.dismiss();
-      console.log('Invite member to group');
+      onUpdate?.();
     };
 
     const handleOpenMenu = () => {
@@ -136,11 +144,14 @@ const GroupFriendDetailsSheet = forwardRef<BottomSheetModal, GroupFriendDetailsS
                     <IconUsers size={20} color="#6B7280" />
                   </TouchableOpacity>
                 )}
-                <View ref={menuButtonRef} collapsable={false}>
-                  <TouchableOpacity style={styles.actionButton} onPress={handleOpenMenu}>
-                    <IconDotsVertical size={20} color="#6B7280" />
-                  </TouchableOpacity>
-                </View>
+
+                {(isGroup(item) ? isOwner : true) && (
+                  <View ref={menuButtonRef} collapsable={false}>
+                    <TouchableOpacity style={styles.actionButton} onPress={handleOpenMenu}>
+                      <IconDotsVertical size={20} color="#6B7280" />
+                    </TouchableOpacity>
+                  </View>
+                )}
               </View>
 
               <Modal
@@ -161,22 +172,25 @@ const GroupFriendDetailsSheet = forwardRef<BottomSheetModal, GroupFriendDetailsS
                         right: menuPosition.right,
                       },
                     ]}>
-                    {isGroup(item) && (
+                    {isGroup(item) && isOwner && (
                       <TouchableOpacity style={styles.menuItem} onPress={handleEdit}>
                         <IconEdit size={18} color="#6B7280" />
                         <Text style={styles.menuItemText}>{t('groups.details.edit')}</Text>
                       </TouchableOpacity>
                     )}
-                    <TouchableOpacity style={styles.menuItem} onPress={handleMenuDelete}>
-                      {isGroup(item) ? (
-                        <IconTrash size={18} color="#EF4444" />
-                      ) : (
-                        <IconUserMinus size={18} color="#EF4444" />
-                      )}
-                      <Text style={[styles.menuItemText, styles.menuItemTextDanger]}>
-                        {isGroup(item) ? t('groups.details.delete') : t('groups.details.remove')}
-                      </Text>
-                    </TouchableOpacity>
+
+                    {(!isGroup(item) || isOwner) && (
+                      <TouchableOpacity style={styles.menuItem} onPress={handleMenuDelete}>
+                        {isGroup(item) ? (
+                          <IconTrash size={18} color="#EF4444" />
+                        ) : (
+                          <IconUserMinus size={18} color="#EF4444" />
+                        )}
+                        <Text style={[styles.menuItemText, styles.menuItemTextDanger]}>
+                          {isGroup(item) ? t('groups.details.delete') : t('groups.details.remove')}
+                        </Text>
+                      </TouchableOpacity>
+                    )}
                   </View>
                 </TouchableOpacity>
               </Modal>
@@ -258,8 +272,11 @@ const GroupFriendDetailsSheet = forwardRef<BottomSheetModal, GroupFriendDetailsS
         {isGroup(item) && (
           <GroupMembersSheet
             ref={membersSheetRef}
+            groupId={item.id}
+            ownerId={item.ownerId || ''}
             members={item.members}
             onInvite={handleInviteMember}
+            onMembersUpdate={onUpdate}
           />
         )}
       </>

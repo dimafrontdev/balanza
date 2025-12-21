@@ -72,13 +72,12 @@ const AddAccountSheet = forwardRef<BottomSheetModal, AddAccountSheetProps>(
     const onSubmit = async (data: AccountFormData) => {
       try {
         const balance = parseFloat(data.currentBalance);
-        
-        // Validate balance is a valid number
+
         if (isNaN(balance)) {
           console.error('Invalid balance value:', data.currentBalance);
           return;
         }
-        
+
         const accountData = {
           name: data.accountName,
           balance,

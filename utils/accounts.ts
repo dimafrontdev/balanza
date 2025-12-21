@@ -1,5 +1,4 @@
 import { Account, AccountType, AccountTypeConfig } from '@/types/account';
-import { Currency, convertCurrency } from '@/utils/currency';
 import { ACCOUNT_TYPE_CONFIG } from '@/constants/accounts';
 
 export interface GroupedAccount {
@@ -9,10 +8,7 @@ export interface GroupedAccount {
   config: AccountTypeConfig;
 }
 
-export const groupAccountsByType = (
-  accounts: Account[],
-  currency: Currency,
-): GroupedAccount[] => {
+export const groupAccountsByType = (accounts: Account[]): GroupedAccount[] => {
   const groups = accounts.reduce(
     (acc, account) => {
       if (!acc[account.type]) {
@@ -27,12 +23,7 @@ export const groupAccountsByType = (
   return Object.entries(groups)
     .map(([type, accountsList]) => {
       const total = accountsList.reduce((sum, acc) => {
-        const converted = convertCurrency(
-          acc.balance,
-          acc.currency.code || '',
-          currency.code || '',
-        );
-        return sum + converted;
+        return sum + acc.balance;
       }, 0);
       const config = ACCOUNT_TYPE_CONFIG[type];
 

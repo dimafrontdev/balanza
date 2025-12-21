@@ -21,7 +21,6 @@ export default function TotalBalanceWidget({
   onPress,
   isLoading = false,
 }: TotalBalanceWidgetProps) {
-  console.log(chartDataValues);
   const { t } = useTranslation();
   const chartData = generateLast6MonthsData(chartDataValues || []);
   const isPositiveChange = changeAmount >= 0;

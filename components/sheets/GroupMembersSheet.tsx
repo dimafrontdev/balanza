@@ -1,25 +1,48 @@
-import { forwardRef, useState } from 'react';
+import { forwardRef, useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { Text } from 'react-native-paper';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from 'react-i18next';
 import BottomSheetWrapper from '@/components/ui/common/BottomSheetWrapper';
 import { useBottomSheet } from '@/hooks/useBottomSheet';
-import { GroupMember, MOCK_FRIENDS } from '@/mocks';
+import { GroupMember } from '@/mocks';
 import { IconArrowBack, IconTrash } from '@/assets/icons';
 import StyledButton from '@/components/ui/common/StyledButton';
+import useAuthStore from '@/store/authStore';
+import { groupsApi } from '@/api/groups';
 
 interface GroupMembersSheetProps {
+  groupId: string;
+  ownerId: string;
   members?: GroupMember[];
   onInvite?: () => void;
+  onMembersUpdate?: () => void;
 }
 
 const GroupMembersSheet = forwardRef<BottomSheetModal, GroupMembersSheetProps>(
-  ({ members = [], onInvite }, ref) => {
+  ({ groupId, ownerId, members = [], onInvite, onMembersUpdate }, ref) => {
     const { t } = useTranslation();
     const { renderBackdrop } = useBottomSheet(['80%']);
+    const { user } = useAuthStore();
     const [showAddMembers, setShowAddMembers] = useState(false);
     const [selectedFriends, setSelectedFriends] = useState<string[]>([]);
+    const [availableFriends, setAvailableFriends] = useState<any[]>([]);
+    const isGroupOwner = user?.id === ownerId;
+
+    useEffect(() => {
+      if (showAddMembers) {
+        loadAvailableFriends();
+      }
+    }, [showAddMembers]);
+
+    const loadAvailableFriends = async () => {
+      const data = await groupsApi.getGroupsAndFriends();
+      const memberIds = members.map(m => m.id);
+      const available = data.friends.filter(
+        f => f.status === 'active' && !memberIds.includes(f.id),
+      );
+      setAvailableFriends(available);
+    };
 
     const handleClose = () => {
       (ref as any)?.current?.dismiss();
@@ -33,14 +56,21 @@ const GroupMembersSheet = forwardRef<BottomSheetModal, GroupMembersSheetProps>(
       );
     };
 
-    const handleAddMembers = () => {
-      console.log('Adding members:', selectedFriends);
+    const handleAddMembers = async () => {
+      if (selectedFriends.length === 0) return;
+      await groupsApi.addMembersToGroup(groupId, selectedFriends);
       setShowAddMembers(false);
       setSelectedFriends([]);
+      onMembersUpdate?.();
       onInvite?.();
     };
 
     const handleDeleteMember = (memberId: string, memberName: string) => {
+      if (memberId === user?.id) {
+        Alert.alert(t('groups.error'), 'You cannot remove yourself from the group');
+        return;
+      }
+
       Alert.alert(
         t('groups.details.confirmTitle'),
         t('groups.details.confirmRemoveMember', { name: memberName }),
@@ -52,19 +82,21 @@ const GroupMembersSheet = forwardRef<BottomSheetModal, GroupMembersSheetProps>(
           {
             text: t('groups.details.remove'),
             style: 'destructive',
-            onPress: () => {
-              console.log('Removing member:', memberId);
-              // TODO: Implement actual member removal
+            onPress: async () => {
+              try {
+                await groupsApi.removeMemberFromGroup(groupId, memberId);
+                onMembersUpdate?.();
+              } catch (error: any) {
+                Alert.alert(
+                  t('groups.error'),
+                  error.response?.data?.error || 'Failed to remove member',
+                );
+              }
             },
           },
         ],
       );
     };
-
-    const memberIds = members.map(m => m.id);
-    const availableFriends = MOCK_FRIENDS.filter(
-      f => f.status === 'active' && !memberIds.includes(f.id),
-    );
 
     return (
       <BottomSheetWrapper
@@ -83,39 +115,44 @@ const GroupMembersSheet = forwardRef<BottomSheetModal, GroupMembersSheetProps>(
           {!showAddMembers ? (
             <>
               <ScrollView style={styles.membersList}>
-                <View style={styles.memberItem}>
-                  <View style={styles.avatarContainer}>
-                    <Text style={styles.avatarText}>Y</Text>
-                  </View>
-                  <View style={styles.memberInfo}>
-                    <Text style={styles.memberName}>{t('groups.details.you')}</Text>
-                    <Text style={styles.memberRole}>{t('groups.details.admin')}</Text>
-                  </View>
-                </View>
+                {members.map(member => {
+                  const isCurrentUser = member.id === user?.id;
+                  const isOwner = member.id === ownerId;
 
-                {members.map(member => (
-                  <View key={member.id} style={styles.memberItem}>
-                    <View style={styles.avatarContainer}>
-                      <Text style={styles.avatarText}>{member.name.charAt(0).toUpperCase()}</Text>
+                  return (
+                    <View key={member.id} style={styles.memberItem}>
+                      <View style={styles.avatarContainer}>
+                        <Text style={styles.avatarText}>{member.name.charAt(0).toUpperCase()}</Text>
+                      </View>
+                      <View style={styles.memberInfo}>
+                        <Text style={styles.memberName}>
+                          {member.name}
+                          {isCurrentUser ? ` (${t('groups.details.you')})` : ''}
+                        </Text>
+                        {isOwner && (
+                          <Text style={styles.memberRole}>{t('groups.details.admin')}</Text>
+                        )}
+                      </View>
+                      {isGroupOwner && !isCurrentUser && (
+                        <TouchableOpacity
+                          style={styles.deleteButton}
+                          onPress={() => handleDeleteMember(member.id, member.name)}>
+                          <IconTrash size={18} color="#EF4444" />
+                        </TouchableOpacity>
+                      )}
                     </View>
-                    <View style={styles.memberInfo}>
-                      <Text style={styles.memberName}>{member.name}</Text>
-                    </View>
-                    <TouchableOpacity
-                      style={styles.deleteButton}
-                      onPress={() => handleDeleteMember(member.id, member.name)}>
-                      <IconTrash size={18} color="#EF4444" />
-                    </TouchableOpacity>
-                  </View>
-                ))}
+                  );
+                })}
               </ScrollView>
 
-              <StyledButton
-                title={t('groups.details.addMembers')}
-                onPress={() => setShowAddMembers(true)}
-                size="medium"
-                style={styles.button}
-              />
+              {isGroupOwner && (
+                <StyledButton
+                  title={t('groups.details.addMembers')}
+                  onPress={() => setShowAddMembers(true)}
+                  size="medium"
+                  style={styles.button}
+                />
+              )}
             </>
           ) : (
             <>

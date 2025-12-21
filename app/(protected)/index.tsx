@@ -15,7 +15,7 @@ import AddTransactionSheet from '@/components/sheets/AddTransactionSheet';
 import BudgetSheet from '@/components/sheets/BudgetSheet';
 import { HomeWidgetConfig } from '@/components/sheets/CustomizeHomeSheet';
 import useSettingsStore from '@/store/settingsStore';
-import { formatAmount, convertCurrency } from '@/utils/currency';
+import { formatAmount } from '@/utils/currency';
 import { DEFAULT_HOME_WIDGETS } from '@/constants/homeWidgets';
 import {
   MOCK_TRANSACTIONS,
@@ -65,10 +65,9 @@ export default function BalanceScreen() {
   const totalBalance = useMemo(() => {
     const accountsToInclude = accounts.filter(acc => selectedAccountIds.includes(acc.id));
     return accountsToInclude.reduce((sum, account) => {
-      const converted = convertCurrency(account.balance, account.currency.code, currency.code);
-      return sum + converted;
+      return sum + account.balance;
     }, 0);
-  }, [currency.code, selectedAccountIds, accounts]);
+  }, [selectedAccountIds, accounts]);
 
   const monthlyBudget = 1000;
   const monthlySpent = 1500;

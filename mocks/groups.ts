@@ -1,5 +1,6 @@
 export interface Friend {
   id: string;
+  friendshipId?: string;
   name: string;
   icon: string;
   avatar?: string;
@@ -17,6 +18,7 @@ export interface Group {
   id: string;
   name: string;
   icon: string;
+  ownerId?: string;
   balance: number;
   membersCount: number;
   members?: GroupMember[];

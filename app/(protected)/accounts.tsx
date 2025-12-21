@@ -62,8 +62,8 @@ export default function AccountsScreen() {
   };
 
   const groupedAccounts = useMemo(() => {
-    return groupAccountsByType(accounts, currency);
-  }, [accounts, currency]);
+    return groupAccountsByType(accounts);
+  }, [accounts]);
 
   const handleAddAccount = () => {
     setEditAccount(null);

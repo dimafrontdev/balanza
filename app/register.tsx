@@ -6,7 +6,7 @@ import AuthFooter from '@/components/ui/common/AuthFooter';
 import FormField from '@/components/ui/common/FormField';
 import TextInput from '@/components/ui/inputs/TextInput';
 import { IconLock, IconMail, IconProfile, IconSecure, IconStars } from '@/assets/icons';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import useAuthStore from '../store/authStore';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -20,6 +20,7 @@ export default function RegisterScreen() {
   const { register, loading } = useAuthStore();
   const router = useRouter();
   const { t } = useTranslation();
+  const { invitationToken } = useLocalSearchParams<{ invitationToken?: string }>();
 
   const {
     handleSubmit,
@@ -41,7 +42,7 @@ export default function RegisterScreen() {
   const password = watch('password');
 
   const onSubmit = (data: RegisterFormData) => {
-    register(data);
+    register({ ...data, invitationToken });
   };
 
   return (
